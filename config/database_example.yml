@@ -1,0 +1,22 @@
+default: &default
+  adapter:
+  encoding: 
+  host: 
+  username: 
+  password:
+  pool: 
+
+development:
+  <<: *default
+  database: 
+
+
+test:
+  <<: *default
+  database: 
+
+production:
+  <<: *default
+  database:
+  username: 
+  password:

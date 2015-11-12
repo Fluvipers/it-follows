@@ -1,0 +1,6 @@
+= form_for :line, url: lines_path do |f|
+  %p
+    = f.label :name , "name"
+    %br
+      = f.text_field :name
+  = f.submit "Submit"
