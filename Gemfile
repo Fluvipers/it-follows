@@ -8,8 +8,10 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'haml'
+gem 'devise'
 
 group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
 end
 
 group :test do
