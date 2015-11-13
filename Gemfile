@@ -11,7 +11,6 @@ gem 'haml'
 gem 'devise'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0'
 end
 
 group :test do
