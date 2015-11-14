@@ -149,26 +149,22 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    xpath (2.0.0)
-      nokogiri (~> 1.3)
     warden (1.2.3)
       rack (>= 1.0)
+    xpath (2.0.0)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   capybara
+  devise
   haml
   jbuilder (~> 2.0)
   pg
   rails (= 4.2.4)
   rspec-rails
-  devise
-  jbuilder (~> 2.0)
-  pg
-  rails (= 4.2.4)
-  rspec-rails (~> 3.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
