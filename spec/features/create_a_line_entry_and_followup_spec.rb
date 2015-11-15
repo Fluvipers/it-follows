@@ -1,4 +1,5 @@
 require 'rails_helper'
+#Rails.application.routes.draw { resources :cosas, except: [:destroy], controller: 'line_entries' }
 
 feature "Create a new line entry and enter followups for that entry" do
   context "When there is a line called 'Proposals' available on the nav menu" do
@@ -6,7 +7,7 @@ feature "Create a new line entry and enter followups for that entry" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../fixtures', __FILE__)
         user = User.create!(first_name: 'Jhon', last_name: 'Smith', email: 'wendy@gmail.com',
-          password: '12345678', password_confirmation: '12345678')
+          password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
 
         user.lines.create!(name: 'Proposals')
 
