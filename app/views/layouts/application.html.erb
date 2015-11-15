@@ -6,6 +6,11 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <div class="nav">
+    <% @lines.each do |line| %>
+      <%= link_to line.name, "#" %>
+    <% end %>
+  </div>
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>  
 

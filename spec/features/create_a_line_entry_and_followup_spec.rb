@@ -5,18 +5,21 @@ feature "Create a new line entry and enter followups for that entry" do
     context "As a logged user" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../fixtures', __FILE__)
-        user = User.create(email: 'wendy@gmail.com', password: '12345678', password_confirmation: '12345678')
-        user.lines.create(name: 'Proposals')
+        user = User.create!(first_name: 'Jhon', last_name: 'Smith', email: 'wendy@gmail.com',
+          password: '12345678', password_confirmation: '12345678')
 
-        visit new_session_path
+        user.lines.create!(name: 'Proposals')
 
-        within("#new_session") do
+        visit new_user_session_path
+
+        within("#new_user") do
           fill_in "Email", with: user.email
           fill_in "Password", with: '12345678'
           click_button "Log in"
         end
 
         within(".nav") do
+          puts page.body
           click_on 'Proposals'
         end
 
