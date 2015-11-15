@@ -11,11 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151115043636) do
+ActiveRecord::Schema.define(version: 20151115164242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "line_entries", force: :cascade do |t|
+    t.json     "data"
+    t.integer  "user_id"
+    t.integer  "line_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "line_entries", ["line_id"], name: "index_line_entries_on_line_id", using: :btree
+  add_index "line_entries", ["user_id"], name: "index_line_entries_on_user_id", using: :btree
 
   create_table "lines", force: :cascade do |t|
     t.string  "name"
@@ -52,5 +63,7 @@ ActiveRecord::Schema.define(version: 20151115043636) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
+  add_foreign_key "line_entries", "lines"
+  add_foreign_key "line_entries", "users"
   add_foreign_key "lines", "users"
 end

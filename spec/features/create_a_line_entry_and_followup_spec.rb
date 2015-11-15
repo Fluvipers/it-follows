@@ -20,15 +20,14 @@ feature "Create a new line entry and enter followups for that entry" do
         end
 
         within(".nav") do
-          puts page.body
           click_on 'Proposals'
         end
 
-        expect(current_path).to eq 'proposals'
+        expect(current_path).to eq '/proposals'
 
         click_on 'New'
 
-        expect(current_path).to eq 'proposals/new'
+        expect(current_path).to eq '/proposals/new'
 
         within("#line-entry-form") do
           expect(page).to_not have_selector("#followups")
