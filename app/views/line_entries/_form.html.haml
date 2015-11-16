@@ -1,11 +1,18 @@
 = simple_form_for(@line_entry, html: { id: 'line-entry-form', class: 'form-horizontal' }) do |f|
-  = f.label :title, 'Title'
-  = f.input_field :title
+  - if @line_entry.new_record?
+    = f.label :title, 'Title'
+    = f.input_field :title
+  - else
+    = @line_entry.title
 
   = f.label :advertiser, 'Advertiser'
   = f.input_field :advertiser
 
   = f.label :client, 'Client'
   = f.input_field :client
+
+  - if not @line_entry.new_record?
+    #followups
+      hello
 
   = f.submit "Submit"
