@@ -38,7 +38,7 @@ feature "Create a new line entry and enter followups for that entry" do
           click_on 'Submit'
         end
 
-        expect(current_path).to eq 'proposals/a-new-novel-proposal'
+        expect(current_path).to eq '/proposals/a-new-novel-proposal/edit'
 
         within("#line-entry-form") do
           expect(page).to have_selector("#followups")

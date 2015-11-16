@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20151115164242) do
   enable_extension "hstore"
 
   create_table "line_entries", force: :cascade do |t|
-    t.json     "data"
+    t.jsonb    "data"
     t.integer  "user_id"
     t.integer  "line_id"
     t.datetime "created_at", null: false
