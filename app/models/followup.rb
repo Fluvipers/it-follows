@@ -5,4 +5,5 @@ class Followup < ActiveRecord::Base
   has_many :tasks
   has_many :attachments
   validates_presence_of :description, :percentage
+  mount_uploader :document, DocumentUploader
 end

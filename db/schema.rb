@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117162932) do
+ActiveRecord::Schema.define(version: 20151117195158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "attachments", force: :cascade do |t|
     t.integer  "followup_id"
@@ -33,6 +32,7 @@ ActiveRecord::Schema.define(version: 20151117162932) do
     t.integer  "percentage"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.json     "documents"
   end
 
   add_index "followups", ["line_entry_id"], name: "index_followups_on_line_entry_id", using: :btree

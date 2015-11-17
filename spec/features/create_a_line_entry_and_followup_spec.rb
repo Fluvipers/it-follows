@@ -69,9 +69,9 @@ feature "Create a new line entry and enter followups for that entry" do
         task = followup.tasks.first
         expect(task.description).to eq "call the client"
 
-        expect(followup.attachments.count).to eq 1
-        attachment = followup.attachments.first
-        expect(attachment.file_name).to eq 'minute.doc'
+        expect(followup.documents.count).to eq 1
+        attachment = followup.documents.first
+        expect(attachment["original_filename"]).to eq 'minute.doc'
 
         expect(current_path).to eq "/proposals/#{line_entry.id}/edit"
 
