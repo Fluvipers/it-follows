@@ -5,11 +5,11 @@ feature "Create a new line entry and enter followups for that entry" do
   context "When there is a line called 'Proposals' available on the nav menu" do
     context "As a logged user" do
       scenario "I create a new Proposal and add followups for tha proposal" do
-        file_path = File.expand_path('../../../fixtures', __FILE__)
+        file_path = File.expand_path('../../../spec/fixtures', __FILE__)
         user = User.create!(first_name: 'Jhon', last_name: 'Smith', email: 'wendy@gmail.com',
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
 
-        user.lines.create!(name: 'Proposals')
+        line = user.lines.create!(name: 'Proposals')
 
         visit new_user_session_path
 
@@ -38,6 +38,10 @@ feature "Create a new line entry and enter followups for that entry" do
           click_on 'Submit'
         end
 
+        expect(line.line_entries.count).to eq 1
+        line_entry = line.line_entries.first
+
+        expect(line_entry.title).to eq "A new novel proposal"
         expect(current_path).to eq '/proposals/a-new-novel-proposal/edit'
 
         within("#line-entry-form") do
@@ -50,11 +54,12 @@ feature "Create a new line entry and enter followups for that entry" do
 
         within("#followups") do
           fill_in 'Activity details', with: '@dave and I visited the client, they need #sports and #fashion'
-          fill_in 'Tasks', with: 'call the client\nsend printed proposal'
           fill_in 'Completion percentage', with: '10'
+          fill_in 'Tasks', with: 'call the client\nsend printed proposal'
           attach_file('Attachments', "#{file_path}/minute.doc")
-          click_on 'Submit'
         end
+
+        click_on 'Submit'
 
         expect(current_path).to eq 'proposals/a-new-novel-proposal'
 

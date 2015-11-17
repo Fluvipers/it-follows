@@ -11,11 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151115164242) do
+ActiveRecord::Schema.define(version: 20151117162932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "attachments", force: :cascade do |t|
+    t.integer  "followup_id"
+    t.string   "file_name"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "attachments", ["followup_id"], name: "index_attachments_on_followup_id", using: :btree
+
+  create_table "followups", force: :cascade do |t|
+    t.integer  "line_entry_id"
+    t.integer  "user_id"
+    t.text     "description"
+    t.integer  "percentage"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "followups", ["line_entry_id"], name: "index_followups_on_line_entry_id", using: :btree
+  add_index "followups", ["user_id"], name: "index_followups_on_user_id", using: :btree
 
   create_table "line_entries", force: :cascade do |t|
     t.jsonb    "data"
@@ -34,6 +55,18 @@ ActiveRecord::Schema.define(version: 20151115164242) do
   end
 
   add_index "lines", ["user_id"], name: "index_lines_on_user_id", using: :btree
+
+  create_table "tasks", force: :cascade do |t|
+    t.integer  "followup_id"
+    t.integer  "user_id"
+    t.text     "description"
+    t.boolean  "completed"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "tasks", ["followup_id"], name: "index_tasks_on_followup_id", using: :btree
+  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -63,7 +96,12 @@ ActiveRecord::Schema.define(version: 20151115164242) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
+  add_foreign_key "attachments", "followups"
+  add_foreign_key "followups", "line_entries"
+  add_foreign_key "followups", "users"
   add_foreign_key "line_entries", "lines"
   add_foreign_key "line_entries", "users"
   add_foreign_key "lines", "users"
+  add_foreign_key "tasks", "followups"
+  add_foreign_key "tasks", "users"
 end

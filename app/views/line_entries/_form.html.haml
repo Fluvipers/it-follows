@@ -13,6 +13,16 @@
 
   - if not @line_entry.new_record?
     #followups
-      hello
+      = f.fields_for @line_entry.followups.build do |ff|
+        = ff.label :description, "Activity details"
+        = ff.input_field :description
 
+        = ff.label :percentage, "Completion percentage"
+        = ff.input_field :percentage
+
+        %label{ for: "line_entry_followup_tasks" } Tasks
+        %textarea{ id: "line_entry_followup_tasks", name: "line_entry[followup][tasks]" }
+
+        = ff.label :attachments, "Attachments"
+        = ff.file_field :attachments, multiple: true, name: "line_entry[followup][attachments][]"
   = f.submit "Submit"

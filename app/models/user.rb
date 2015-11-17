@@ -7,5 +7,8 @@ class User < ActiveRecord::Base
 
   has_many :lines, dependent: :destroy
   has_many :line_entries, dependent: :destroy
+  has_many :followups
+  has_many :tasks
+
   validates_presence_of :first_name, :last_name
 end
