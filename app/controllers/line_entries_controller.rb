@@ -21,7 +21,26 @@ class LineEntriesController < ApplicationController
     @line_entry = LineEntry.last
   end
 
+  def update
+    @line_entry = current_user.line_entries.find(params[:id])
+    x = line_entry_params.merge(line: Line.last)
+    tasks = x["followups_attributes"]["0"].delete("tasks")
+    puts "*" * 100
+    tasks = tasks.split("xx")
+    puts tasks.inspect
+
+    @line_entry.update(x)
+    followup = @line_entry.followups.last
+    followup.tasks.build(description: tasks[0])
+    followup.tasks.build(description: tasks[1])
+
+    followup.save!
+
+    redirect_to edit_line_entry_path(@line_entry)
+  end
+
+  private
   def line_entry_params
-    params.require(:line_entry).permit(:title, :advertiser, :client)
+    params.require(:line_entry).permit(:title, :advertiser, :client, followups_attributes: [:description, :percentage, :tasks])
   end
 end

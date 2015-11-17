@@ -42,7 +42,8 @@ feature "Create a new line entry and enter followups for that entry" do
         line_entry = line.line_entries.first
 
         expect(line_entry.title).to eq "A new novel proposal"
-        expect(current_path).to eq '/proposals/a-new-novel-proposal/edit'
+
+        expect(current_path).to eq "/proposals/#{line_entry.id}/edit"
 
         within("#line-entry-form") do
           expect(page).to have_selector("#followups")
@@ -55,13 +56,24 @@ feature "Create a new line entry and enter followups for that entry" do
         within("#followups") do
           fill_in 'Activity details', with: '@dave and I visited the client, they need #sports and #fashion'
           fill_in 'Completion percentage', with: '10'
-          fill_in 'Tasks', with: 'call the client\nsend printed proposal'
+          find("#line_entry_followups_attributes_0_tasks").set("call the clientxxsend printed proposal")
           attach_file('Attachments', "#{file_path}/minute.doc")
         end
 
         click_on 'Submit'
 
-        expect(current_path).to eq 'proposals/a-new-novel-proposal'
+        line_entry.reload
+        expect(line_entry.followups.count).to eq 1
+        followup = line_entry.followups.first
+        expect(followup.tasks.count).to eq 2
+        task = followup.tasks.first
+        expect(task.description).to eq "call the client"
+
+        expect(followup.attachments.count).to eq 1
+        attachment = followup.attachments.first
+        expect(attachment.file_name).to eq 'minute.doc'
+
+        expect(current_path).to eq "/proposals/#{line_entry.id}/edit"
 
         within("#mentions") do
           expect(page).to have_link("@dave")
@@ -76,7 +88,7 @@ feature "Create a new line entry and enter followups for that entry" do
           click_on 'Proposals'
         end
 
-        expect(current_path).to eq 'proposals'
+        expect(current_path).to eq '/proposals'
 
         expect(page).to have_content("A new novel proposal")
         expect(page).to have_content("wendy")
