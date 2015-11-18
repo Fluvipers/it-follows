@@ -1,4 +1,5 @@
 require "mention_finder"
+require "hashtag_finder"
 class LineEntriesController < ApplicationController
   def index
     @line_entries = LineEntry.all
@@ -22,6 +23,7 @@ class LineEntriesController < ApplicationController
   def edit
     @line_entry = LineEntry.find(params[:id])
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
+    @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
   end
 
   def update
@@ -40,11 +42,16 @@ class LineEntriesController < ApplicationController
     redirect_to edit_line_entry_path(@line_entry)
   end
     
+  private
+
   def show_mentions(description)
     MentionFinder.new(description).find_mentions
   end
 
-  private
+  def show_hashtags(description)
+    HashtagFinder.new(description).find_hashtags
+  end
+
   def line_entry_params
     params.require(:line_entry).permit(:title, :advertiser, :client, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]]) 
   end

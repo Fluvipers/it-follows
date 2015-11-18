@@ -17,8 +17,8 @@
         = link_to "@#{mention}", "#"
       
     #tags
-      = link_to "#sports", "#"
-      = link_to "#fashion", "#"
+      - @hashtags.each do |hashtag|
+        = link_to "##{hashtag}", "#"
 
     #followups
       = f.simple_fields_for :followups, @line_entry.followups.build do |ff|
