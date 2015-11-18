@@ -10,4 +10,8 @@ class ApplicationController < ActionController::Base
   def set_lines
     @lines = Line.all
   end
+
+  def set_new_routes
+    Rails.application.routes.prepend { resources :proposals, except: [:destroy], as: 'line_entries', controller: 'line_entries' }
+  end
 end
