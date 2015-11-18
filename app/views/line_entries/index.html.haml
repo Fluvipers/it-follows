@@ -1,1 +1,5 @@
 = link_to 'New', '/proposals/new'
+- @line_entries.each do |entry|
+  = entry.title
+  = entry.user.first_name
+  = "#{entry.followups.last.percentage}%"

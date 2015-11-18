@@ -12,6 +12,14 @@
   = f.input_field :client
 
   - if not @line_entry.new_record?
+    #mentions
+      - @mentions.each do |mention| 
+        = link_to "@#{mention}", "#"
+      
+    #tags
+      - @hashtags.each do |hashtag|
+        = link_to "##{hashtag}", "#"
+
     #followups
       = f.simple_fields_for :followups, @line_entry.followups.build do |ff|
         = ff.label :description, "Activity details"

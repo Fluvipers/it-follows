@@ -13,6 +13,7 @@ gem 'devise'
 gem 'simple_form'
 gem 'hstore_accessor'
 gem "jsonb_accessor"
+gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 
 group :development, :test do
   gem 'rspec-rails'
