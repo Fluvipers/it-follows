@@ -13,8 +13,9 @@
 
   - if not @line_entry.new_record?
     #mentions
-      = link_to "@dave", "#"
-
+      - @mentions.each do |mention| 
+        = link_to "@#{mention}", "#"
+      
     #tags
       = link_to "#sports", "#"
       = link_to "#fashion", "#"

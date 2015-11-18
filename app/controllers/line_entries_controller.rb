@@ -1,3 +1,4 @@
+require "mention_finder"
 class LineEntriesController < ApplicationController
   def index
     @line_entries = LineEntry.all
@@ -19,7 +20,8 @@ class LineEntriesController < ApplicationController
   end
 
   def edit
-    @line_entry = LineEntry.last
+    @line_entry = LineEntry.find(params[:id])
+    @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
   end
 
   def update
@@ -36,6 +38,10 @@ class LineEntriesController < ApplicationController
     followup.documents = attachments 
     followup.save!
     redirect_to edit_line_entry_path(@line_entry)
+  end
+    
+  def show_mentions(description)
+    MentionFinder.new(description).find_mentions
   end
 
   private
