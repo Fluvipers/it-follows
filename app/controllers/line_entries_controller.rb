@@ -1,5 +1,6 @@
 class LineEntriesController < ApplicationController
   def index
+    @line_entries = LineEntry.all
   end
 
   def new

@@ -6,7 +6,7 @@ feature "Create a new line entry and enter followups for that entry" do
     context "As a logged user" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../spec/fixtures', __FILE__)
-        user = User.create!(first_name: 'Jhon', last_name: 'Smith', email: 'wendy@gmail.com',
+        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
 
         line = user.lines.create!(name: 'Proposals')
