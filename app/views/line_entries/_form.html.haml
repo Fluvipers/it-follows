@@ -1,4 +1,4 @@
-= simple_form_for(@line_entry, html: { id: 'line-entry-form', class: 'form-horizontal' }) do |f|
+= simple_form_for(@line_entry, html: { multipart: true, id: 'line-entry-form', class: 'form-horizontal' }) do |f|
   - if @line_entry.new_record?
     = f.label :title, 'Title'
     = f.input_field :title
