@@ -8,6 +8,8 @@ class LineEntriesController < ApplicationController
 
   def new
     @line_entry = current_user.line_entries.build
+    @url = line_entries_path
+    @method =  'post'
   end
 
   def create
@@ -17,7 +19,7 @@ class LineEntriesController < ApplicationController
     if @line_entry.save
       redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
     else
-      render 'edit'
+      render 'new'
     end
   end
 
@@ -25,6 +27,8 @@ class LineEntriesController < ApplicationController
     @line_entry = LineEntry.find(params[:id])
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
+    @url = "/proposals/#{params[:id]}"
+    @method = 'patch'
   end
 
   def update
@@ -40,7 +44,7 @@ class LineEntriesController < ApplicationController
     attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
     followup.documents = attachments 
     followup.save!
-    redirect_to edit_line_entry_path('proposals', @line_entry)
+    redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
   end
     
   private
