@@ -27,7 +27,7 @@ class LineEntriesController < ApplicationController
     @line_entry = LineEntry.find(params[:id])
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
-    @url = "/proposals/#{params[:id]}"
+    @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
   end
 
