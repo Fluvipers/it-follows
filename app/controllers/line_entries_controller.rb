@@ -14,7 +14,7 @@ class LineEntriesController < ApplicationController
     x = line_entry_params.merge(line: Line.last)
     @line_entry.attributes = x
     if @line_entry.save
-      redirect_to edit_line_entry_path('proposals', @line_entry)
+      redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
     else
       render 'edit'
     end
