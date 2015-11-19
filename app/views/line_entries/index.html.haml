@@ -1,4 +1,4 @@
-= link_to 'New', '/proposals/new'
+= link_to 'New', new_line_entries_path(@line_entry_path)
 - @line_entries.each do |entry|
   = entry.title
   = entry.user.first_name

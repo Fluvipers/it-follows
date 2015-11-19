@@ -3,6 +3,7 @@ require "hashtag_finder"
 class LineEntriesController < ApplicationController
   def index
     @line_entries = LineEntry.all
+    @line_entry_path = params[:line_entries]
   end
 
   def new
