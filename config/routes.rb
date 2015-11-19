@@ -9,11 +9,9 @@ Rails.application.routes.draw do
 
   get '/proposal/:id', to: 'line_entries#show', as: 'line_entry'
 
-  #patch '/proposals/:id', to: 'line_entries#update'#, via: [:put, :patch]
-  #put '/proposals/:id', to: 'line_entries#update'#, via: [:put, :patch]
+  patch '/proposal/:id', to: 'line_entries#update'#, via: [:put, :patch]
+  put '/proposal/:id', to: 'line_entries#update'#, via: [:put, :patch]
 
-  patch '/proposal/:id', controller: 'line_entries', action: :update #, via: [:put, :patch]
-  put '/proposal/:id', controller: 'line_entries', action: :update #, via: [:put, :patch]
 
   root to: "home#index"
 end
