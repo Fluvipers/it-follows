@@ -14,7 +14,7 @@ class LineEntriesController < ApplicationController
     x = line_entry_params.merge(line: Line.last)
     @line_entry.attributes = x
     if @line_entry.save
-      redirect_to edit_line_entry_path(@line_entry)
+      redirect_to edit_line_entry_path('proposals', @line_entry)
     else
       render 'edit'
     end
@@ -39,7 +39,7 @@ class LineEntriesController < ApplicationController
     attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
     followup.documents = attachments 
     followup.save!
-    redirect_to edit_line_entry_path(@line_entry)
+    redirect_to edit_line_entry_path('proposals', @line_entry)
   end
     
   private

@@ -8,7 +8,7 @@
 <body>
   <div class="nav">
     <% @lines.each do |line| %>
-      <%= link_to line.name, line_entries_path %>
+      <%= link_to line.name, line_entries_path(line_entries: line.name.downcase) %>
     <% end %>
   </div>
   <p class="notice"><%= notice %></p>
