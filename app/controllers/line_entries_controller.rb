@@ -14,9 +14,13 @@ class LineEntriesController < ApplicationController
     @line_entry = current_user.line_entries.build
     @url = line_entries_path
     @method =  'post'
+    line = Line.last
+    @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties).map_properties.join("").html_safe
   end
 
   def create
+   puts "+" * 100
+    puts params.inspect
     @line_entry = current_user.line_entries.new
     x = line_entry_params.merge(line: Line.last)
     @line_entry.attributes = x
@@ -33,6 +37,8 @@ class LineEntriesController < ApplicationController
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
     @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
+    line = Line.last
+    @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties).map_properties.join("").html_safe
   end
 
   def update
@@ -66,6 +72,6 @@ class LineEntriesController < ApplicationController
   end
 
   def line_entry_params
-    params.require(@line_entry_path.data).permit(:title, :advertiser, :client, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]]) 
+    params.require(:line_entry).permit(:data, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]]) 
   end
 end

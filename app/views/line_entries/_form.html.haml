@@ -1,8 +1,5 @@
 = simple_form_for(@line_entry, url: @url, method: @method, html: { multipart: true, id: 'line-entry-form', class: 'form-horizontal' }) do |f|
-  - if @line_entry.new_record?
-    = f.input_field :id
-  - else
-    = @line_entry.title
+  = @inputs
 
   - if not @line_entry.new_record?
     #mentions
