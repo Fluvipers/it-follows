@@ -21,6 +21,10 @@
         = link_to "##{hashtag}", "#"
 
     #followups
+      - @line_entry.followups.each do |followup|
+        = followup.description
+        = "#{followup.percentage}%"
+
       = f.simple_fields_for :followups, @line_entry.followups.build do |ff|
         = ff.label :description, "Activity details"
         = ff.input_field :description

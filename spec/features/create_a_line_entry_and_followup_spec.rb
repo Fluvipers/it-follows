@@ -83,6 +83,11 @@ feature "Create a new line entry and enter followups for that entry" do
           expect(page).to have_link("#fashion")
         end
 
+        within("#followups") do
+          expect(page).to have_content(followup.description)
+          expect(page).to have_content("#{followup.percentage}%")
+        end
+
         within(".nav") do
           click_on 'Proposals'
         end
