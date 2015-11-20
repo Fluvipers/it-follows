@@ -1,6 +1,9 @@
 require "mention_finder"
 require "hashtag_finder"
+
 class LineEntriesController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @line_entries = LineEntry.all
     @line_entry_path = params[:line_entries]

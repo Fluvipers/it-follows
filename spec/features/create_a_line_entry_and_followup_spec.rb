@@ -1,5 +1,4 @@
 require 'rails_helper'
-#Rails.application.routes.draw { resources :cosas, except: [:destroy], controller: 'line_entries' }
 
 feature "Create a new line entry and enter followups for that entry" do
   context "When there is a line called 'Proposals' available on the nav menu" do
@@ -93,6 +92,17 @@ feature "Create a new line entry and enter followups for that entry" do
         expect(page).to have_content("A new novel proposal")
         expect(page).to have_content("wendy")
         expect(page).to have_content("10%")
+      end
+    end
+
+    context "as an anonymous user" do
+      scenario "I should not be able to create new line entries" do
+        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
+          password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
+        line = user.lines.create!(name: 'Proposals')
+        visit root_path
+        click_on "Proposals"
+        expect(current_path).to eq new_user_session_path
       end
     end
   end
