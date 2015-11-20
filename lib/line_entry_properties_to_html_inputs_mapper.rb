@@ -22,7 +22,7 @@ class LineEntryPropertiesToHtmlInputsMapper
   private
 
   def property_name(property)
-    property[:name].downcase
+    property["name"].downcase
   end
 
   def build_input_name(name, property)
@@ -43,7 +43,7 @@ class LineEntryPropertiesToHtmlInputsMapper
   end
 
   def make_it_required(property)
-    :required if property[:required]
+    :required if property["required"] == "true"
   end
 
   def build_name_context

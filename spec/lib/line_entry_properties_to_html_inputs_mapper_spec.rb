@@ -4,7 +4,9 @@ require 'line_entry_properties_to_html_inputs_mapper.rb'
 RSpec.describe LineEntryPropertiesToHtmlInputsMapper do
   describe "#map_properties" do
     it "returns a collection of form inputs for the properties given" do
-      properties = [{name: 'Title', type: 'string', required: true}, {name: 'Percentage', type: 'number', required: false}]
+      properties = [{"name" => 'Title', "required" => "true"},
+        {"name" => 'Percentage', "required" => "false"}]
+
       subject = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], properties)
       result = subject.map_properties
       expect(result).to eq [
