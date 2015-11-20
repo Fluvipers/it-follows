@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20151117195158) do
   create_table "lines", force: :cascade do |t|
     t.string  "name"
     t.integer "user_id"
+    t.jsonb   "properties"
   end
 
   add_index "lines", ["user_id"], name: "index_lines_on_user_id", using: :btree

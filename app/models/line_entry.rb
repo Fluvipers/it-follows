@@ -5,6 +5,4 @@ class LineEntry < ActiveRecord::Base
   has_many :followups
 
   accepts_nested_attributes_for :followups
-
-  jsonb_accessor(:data, title: :string, advertiser: :string, client: :string)
 end
