@@ -5,9 +5,14 @@ RSpec.describe LineEntryPropertiesToHtmlInputsMapper do
   describe "#map_properties" do
     it "returns a collection of form inputs for the properties given" do
       properties = [{name: 'Title', type: 'string', required: true}, {name: 'Percentage', type: 'number', required: false}]
-      subject = LineEntryPropertiesToHtmlInputsMapper.new(properties)
+      subject = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], properties)
       result = subject.map_properties
-      expect(result).to eq ["<label for=\"title\">Title</label>", "<input name=\"title\" id=\"title\" required=\"required\"></input>", "<label for=\"percentage\">Percentage</label>", "<input name=\"percentage\" id=\"percentage\" required=\"required\"></input>"]
+      expect(result).to eq [
+        "<label for=\"line_entry_data_title\">Title</label>",
+        "<input name=\"line_entry[data][title]\" id=\"line_entry_data_title\" required=\"required\"></input>",
+
+        "<label for=\"line_entry_data_percentage\">Percentage</label>",
+        "<input name=\"line_entry[data][percentage]\" id=\"line_entry_data_percentage\"></input>"]
     end
   end
 end

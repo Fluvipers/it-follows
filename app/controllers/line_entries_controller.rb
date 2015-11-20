@@ -1,5 +1,6 @@
 require "mention_finder"
 require "hashtag_finder"
+require "line_entry_properties_to_html_inputs_mapper"
 
 class LineEntriesController < ApplicationController
   before_action :authenticate_user!
@@ -60,7 +61,11 @@ class LineEntriesController < ApplicationController
     HashtagFinder.new(description).find_hashtags
   end
 
+  def mapper_properties_to_html
+    LineEntryPropertiesToHtmlInputsMapper.new(:data).map_properties
+  end
+
   def line_entry_params
-    params.require(:line_entry).permit(:title, :advertiser, :client, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]]) 
+    params.require(@line_entry_path.data).permit(:title, :advertiser, :client, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]]) 
   end
 end
