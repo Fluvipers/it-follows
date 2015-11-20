@@ -6,6 +6,9 @@ class LineEntryPropertiesToHtmlInputsMapper
   end
 
   def map_properties
-    [content_tag(:label, "Title", for: "title"), content_tag(:input, "", name: "title", id: "title", required: :required)]
+    @properties.map do |property|
+      [content_tag(:label, property[:name].titleize, for: property[:name].downcase),
+      content_tag(:input, "", name: property[:name].downcase, id: property[:name].downcase, required: :required)]
+    end.flatten
   end
 end
