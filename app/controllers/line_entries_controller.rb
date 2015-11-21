@@ -14,8 +14,7 @@ class LineEntriesController < ApplicationController
     @line_entry = current_user.line_entries.build
     @url = line_entries_path
     @method =  'post'
-    line = find_line
-    @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties).map_properties.join("").html_safe
+    @properties_inputs = build_properties_inputs
   end
 
   def create
@@ -35,8 +34,7 @@ class LineEntriesController < ApplicationController
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
     @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
-    line = find_line
-    @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties, @line_entry.data).map_properties.join("").html_safe
+    @properties_inputs = build_properties_inputs(@line_entry.data)
   end
 
   def update
@@ -81,5 +79,10 @@ class LineEntriesController < ApplicationController
 
   def line_properties
     find_line.properties.map { |property| property["name"].downcase.to_sym }
+  end
+
+  def build_properties_inputs(values={})
+    line = find_line
+    LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties, values).map_properties.join("").html_safe
   end
 end
