@@ -19,11 +19,10 @@ class LineEntriesController < ApplicationController
   end
 
   def create
-   puts "+" * 100
-    puts params.inspect
     @line_entry = current_user.line_entries.new
-    x = line_entry_params.merge(line: Line.last)
-    @line_entry.attributes = x
+    @line_entry.data = params[:line_entry][:data]
+    @line_entry.line = Line.last
+
     if @line_entry.save
       redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
     else
@@ -48,6 +47,7 @@ class LineEntriesController < ApplicationController
     tasks = tasks.split("xx")
 
     @line_entry.update(x)
+    @line_entry.data = params[:line_entry][:data]
     followup = @line_entry.followups.last
     followup.tasks.build(description: tasks[0])
     followup.tasks.build(description: tasks[1])

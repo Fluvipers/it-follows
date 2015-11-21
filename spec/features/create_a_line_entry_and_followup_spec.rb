@@ -42,9 +42,7 @@ feature "Create a new line entry and enter followups for that entry" do
         expect(line.line_entries.count).to eq 1
         line_entry = line.line_entries.first
 
-puts "aca" * 100
-puts line_entry.inspect
-        expect(line_entry.data[:title]).to eq "A new novel proposal"
+        expect(line_entry.data["title"]).to eq "A new novel proposal"
 
         expect(current_path).to eq "/proposals/#{line_entry.id}/edit"
 
