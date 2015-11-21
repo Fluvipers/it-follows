@@ -14,12 +14,12 @@ class LineEntriesController < ApplicationController
     @line_entry = current_user.line_entries.build
     @url = line_entries_path
     @method =  'post'
-    line = Line.find_by_slug_name(params[:line_entries])
+    line = find_line
     @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties).map_properties.join("").html_safe
   end
 
   def create
-    line = Line.find_by_slug_name(params[:line_entries])
+    line = find_line
 
     @line_entry = current_user.line_entries.new(line_entry_params(line))
     @line_entry.line = line
@@ -37,12 +37,12 @@ class LineEntriesController < ApplicationController
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
     @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
-    line = Line.find_by_slug_name(params[:line_entries])
+    line = find_line
     @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties, @line_entry.data).map_properties.join("").html_safe
   end
 
   def update
-    line = Line.find_by_slug_name(params[:line_entries])
+    line = find_line
 
     @line_entry = current_user.line_entries.find(params[:id])
     x = line_entry_params(line).merge(line: line)
@@ -76,5 +76,9 @@ class LineEntriesController < ApplicationController
   def line_entry_params(line)
     line_properties = line.properties.map { |property| property["name"].downcase.to_sym }
     params.require(:line_entry).permit(data: line_properties, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]])
+  end
+
+  def find_line
+    Line.find_by_slug_name(params[:line_entries])
   end
 end
