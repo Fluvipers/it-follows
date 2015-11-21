@@ -47,15 +47,19 @@ class LineEntriesController < ApplicationController
     @line_entry = current_user.line_entries.find(params[:id])
     x = line_entry_params(line).merge(line: line)
     tasks = x["followups_attributes"]["0"].delete("tasks")
-    tasks = tasks.split("xx")
+    tasks = tasks.split("\r\n")
 
     @line_entry.update(x)
     followup = @line_entry.followups.last
-    followup.tasks.build(description: tasks[0])
-    followup.tasks.build(description: tasks[1])
+
+    tasks.each do |t|
+      followup.tasks.build(description: t, user: current_user)
+    end
+
     attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
     followup.documents = attachments 
     followup.save!
+
     redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
   end
     

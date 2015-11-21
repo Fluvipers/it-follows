@@ -63,7 +63,7 @@ feature "Create a new line entry and enter followups for that entry" do
         within("#followups") do
           fill_in 'Activity details', with: '@dave and I visited the client, they need #sports and #fashion'
           fill_in 'Completion percentage', with: '10'
-          find("#line_entry_followups_attributes_0_tasks").set("call the clientxxsend printed proposal")
+          find("#line_entry_followups_attributes_0_tasks").set('call the client')
           attach_file('Attachments', "#{file_path}/minute.doc")
         end
 
@@ -77,9 +77,10 @@ feature "Create a new line entry and enter followups for that entry" do
 
         expect(line_entry.followups.count).to eq 1
         followup = line_entry.followups.first
-        expect(followup.tasks.count).to eq 2
+        expect(followup.tasks.count).to eq 1
         task = followup.tasks.first
         expect(task.description).to eq "call the client"
+        expect(task.user).to eq user
 
         expect(followup.documents.count).to eq 1
         attachment = followup.documents.first
