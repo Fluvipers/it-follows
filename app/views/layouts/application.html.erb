@@ -2,13 +2,13 @@
 <html>
 <head>
   <title>ItFollows</title>
-  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
   <div class="nav">
     <% @lines.each do |line| %>
-      <%= link_to line.name, line_entries_path(line_entries: line.name.downcase) %>
+      <%= link_to line.name.humanize, line_entries_path(line_entries: line.slug_name) %>
     <% end %>
   </div>
   <p class="notice"><%= notice %></p>

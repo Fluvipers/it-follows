@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 feature "Create a new line entry and enter followups for that entry" do
-  context "When there is a line called 'Proposals' available on the nav menu" do
+  context "When there is a line called 'Support tickets' available on the nav menu" do
     context "As a logged user" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../spec/fixtures', __FILE__)
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
 
-        line = user.lines.create!(name: 'Proposals',
+        line = user.lines.create!(name: 'Support Tickets',
           properties: [{name: 'Title', required: true}, {name: 'Advertiser', required: true}, 
           {name: 'Client', required: true} ])
 
@@ -21,14 +21,14 @@ feature "Create a new line entry and enter followups for that entry" do
         end
 
         within(".nav") do
-          click_on 'Proposals'
+          click_on 'Support tickets'
         end
 
-        expect(current_path).to eq '/proposals'
+        expect(current_path).to eq '/support_tickets'
 
         click_on 'New'
 
-        expect(current_path).to eq '/proposals/new'
+        expect(current_path).to eq '/support_tickets/new'
 
         within("#line-entry-form") do
           expect(page).to_not have_selector("#followups")
@@ -46,7 +46,7 @@ feature "Create a new line entry and enter followups for that entry" do
         expect(line_entry.data["advertiser"]).to eq "Havas"
         expect(line_entry.data["client"]).to eq "Cocacola"
 
-        expect(current_path).to eq "/proposals/#{line_entry.id}/edit"
+        expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
 
         within("#line-entry-form") do
           expect(page).to have_selector("#followups")
@@ -86,7 +86,7 @@ feature "Create a new line entry and enter followups for that entry" do
         attachment = followup.documents.first
         expect(attachment["original_filename"]).to eq 'minute.doc'
 
-        expect(current_path).to eq "/proposals/#{line_entry.id}/edit"
+        expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
 
         within("#mentions") do
           expect(page).to have_link("@dave")
@@ -103,10 +103,10 @@ feature "Create a new line entry and enter followups for that entry" do
         end
 
         within(".nav") do
-          click_on 'Proposals'
+          click_on 'Support tickets'
         end
 
-        expect(current_path).to eq '/proposals'
+        expect(current_path).to eq '/support_tickets'
 
         expect(page).to have_content("New title")
         expect(page).to have_content("wendy")

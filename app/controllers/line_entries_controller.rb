@@ -14,12 +14,12 @@ class LineEntriesController < ApplicationController
     @line_entry = current_user.line_entries.build
     @url = line_entries_path
     @method =  'post'
-    line = Line.last
+    line = Line.find_by_slug_name(params[:line_entries])
     @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties).map_properties.join("").html_safe
   end
 
   def create
-    line = Line.last
+    line = Line.find_by_slug_name(params[:line_entries])
 
     @line_entry = current_user.line_entries.new(line_entry_params(line))
     @line_entry.line = line
@@ -37,12 +37,12 @@ class LineEntriesController < ApplicationController
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
     @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
-    line = Line.last
+    line = Line.find_by_slug_name(params[:line_entries])
     @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties, @line_entry.data).map_properties.join("").html_safe
   end
 
   def update
-    line = Line.last
+    line = Line.find_by_slug_name(params[:line_entries])
 
     @line_entry = current_user.line_entries.find(params[:id])
     x = line_entry_params(line).merge(line: line)

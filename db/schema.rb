@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120150229) do
+ActiveRecord::Schema.define(version: 20151121180609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20151120150229) do
     t.string  "name"
     t.integer "user_id"
     t.jsonb   "properties"
+    t.string  "slug_name"
   end
 
   add_index "lines", ["user_id"], name: "index_lines_on_user_id", using: :btree
