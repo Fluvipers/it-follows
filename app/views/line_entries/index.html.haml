@@ -1,5 +1,13 @@
 = link_to 'New', new_line_entries_path(@line_entry_path)
-- @line_entries.each do |entry|
-  = entry.data["title"]
-  = entry.user.first_name
-  = "#{entry.followups.last.percentage}%"
+%table.table
+  %thead
+    %tr
+      %th Something
+      %th Name
+      %th Progress
+  %tbody
+    - @line_entries.each do |entry|
+      %tr
+        %td= entry.data["title"]
+        %td= entry.user.first_name
+        %td= "#{entry.followups.last.percentage}%"

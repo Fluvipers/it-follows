@@ -6,7 +6,7 @@ class LineEntriesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @line_entries = LineEntry.all
+    @line_entries = find_line.line_entries
     @line_entry_path = params[:line_entries]
   end
 

@@ -19,7 +19,7 @@ class LineEntryPropertiesToHtmlInputsMapper
       label = build_label(label_title, input_id)
       input = build_input(input_name, input_id, property, value)
 
-      [label, input]
+      content_tag(:div, [label, input].join.html_safe, class: 'form-group')
 
     end.flatten
   end
