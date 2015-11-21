@@ -8,23 +8,49 @@
       
     #tags
       - @hashtags.each do |hashtag|
-        = link_to "##{hashtag}", "#"
+        %span.label.label-info
+          = link_to "##{hashtag}", "#"
+
+    #tasks
+      %ul.list-group
+      - @line_entry.tasks.each do |task|
+        %li.list-group-item
+          %input{type: 'checkbox'}
+          = task.description
 
     #followups
+      .progress
+        .progress-bar{role: "progressbar", "aria-valuenow"=>"60",
+          "aria-valuemin"=>"0", "aria-valuemax" => "100", style: "width: 60%;"}
+          = "60% Complete"
+
       - @line_entry.followups.each do |followup|
-        = followup.description
-        = "#{followup.percentage}%"
+        .media
+          .media-left
+            %a{href: "#"}
+              %img.media-object{src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+PCEtLQpTb3VyY2UgVVJMOiBob2xkZXIuanMvNjR4NjQKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTEyYzE0MmVmMCB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MTJjMTQyZWYwIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSIxMy40NzY1NjI1IiB5PSIzNi41Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==", alt: "..."}
+          .media-body
+            %h4.media-body= followup.description
+            = "#{followup.percentage}%"
 
       = f.simple_fields_for :followups, @line_entry.followups.build do |ff|
-        = ff.label :description, "Activity details"
-        = ff.input_field :description
+        .form-group
+          = ff.label :description, "Activity details"
+          = ff.input_field :description, class: 'form-control'
+        .form-group
+          = ff.label :percentage, "Completion percentage"
+          = ff.input_field :percentage, class: 'form-control'
 
-        = ff.label :percentage, "Completion percentage"
-        = ff.input_field :percentage
+        .form-group
+          %label{ for: "line_entry_followups_attributes_0_tasks" } Tasks (one per line)
+          %textarea{ id: "line_entry_followups_attributes_0_tasks",
+            name: "line_entry[followups_attributes][0][tasks]",
+            class: 'form-control', rows: 5 }
 
-        %label{ for: "line_entry_followups_attributes_0_tasks" } Tasks
-        %textarea{ id: "line_entry_followups_attributes_0_tasks", name: "line_entry[followups_attributes][0][tasks]" }
+        .form-group
+          = ff.label :attachments, "Attachments"
+          = ff.file_field :attachments, multiple: true,
+            name: "line_entry[followups_attributes][0][attachments][]",
+            class: 'form-control'
 
-        = ff.label :attachments, "Attachments"
-        = ff.file_field :attachments, multiple: true, name: "line_entry[followups_attributes][0][attachments][]"
-  = f.submit "Submit"
+  = f.submit "Submit", class: 'btn btn-primary'

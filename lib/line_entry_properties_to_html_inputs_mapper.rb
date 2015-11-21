@@ -44,7 +44,7 @@ class LineEntryPropertiesToHtmlInputsMapper
 
   def build_input(name, input_id, property, value)
     content_tag(:input, nil, name: name, id: input_id, value: value,
-      required: make_it_required(property))
+      class: "form-control", required: make_it_required(property))
   end
 
   def make_it_required(property)

@@ -14,10 +14,10 @@ RSpec.describe LineEntryPropertiesToHtmlInputsMapper do
 
       expect(result).to eq [
         "<label for=\"line_entry_data_title\">Title</label>",
-        "<input name=\"line_entry[data][title]\" id=\"line_entry_data_title\" value=\"the title\" required=\"required\"></input>",
+        "<input name=\"line_entry[data][title]\" id=\"line_entry_data_title\" value=\"the title\" class=\"form-control\" required=\"required\"></input>",
 
         "<label for=\"line_entry_data_percentage\">Percentage</label>",
-        "<input name=\"line_entry[data][percentage]\" id=\"line_entry_data_percentage\" value=\"80\"></input>"]
+        "<input name=\"line_entry[data][percentage]\" id=\"line_entry_data_percentage\" value=\"80\" class=\"form-control\"></input>"]
     end
   end
 end
