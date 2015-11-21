@@ -29,19 +29,19 @@ class LineEntriesController < ApplicationController
   end
 
   def edit
-    @line_entry = LineEntry.find(params[:id])
+    @line_entry = current_user.line_entries.find(params[:id])
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
+
     @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
+
     @properties_inputs = build_properties_inputs(@line_entry.data)
   end
 
   def update
-    line = find_line
-
     @line_entry = current_user.line_entries.find(params[:id])
-    x = line_entry_params.merge(line: line)
+    x = line_entry_params.merge(line: find_line)
     tasks = x["followups_attributes"]["0"].delete("tasks")
     tasks = tasks.split("\r\n")
 
