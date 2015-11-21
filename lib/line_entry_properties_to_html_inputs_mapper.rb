@@ -1,8 +1,9 @@
 class LineEntryPropertiesToHtmlInputsMapper
   include ActionView::Helpers
-  def initialize(context, properties)
+  def initialize(context, properties, values={})
     @context = context
     @properties = properties
+    @values = values
   end
 
   def map_properties
@@ -13,8 +14,12 @@ class LineEntryPropertiesToHtmlInputsMapper
       label_title = property_name(property)
       input_id = build_input_id(id_context, property)
       input_name = build_input_name(name_context, property)
+      value = @values[property_name(property)]
 
-      [build_label(label_title, input_id), build_input(input_name, input_id, property)]
+      label = build_label(label_title, input_id)
+      input = build_input(input_name, input_id, property, value)
+
+      [label, input]
 
     end.flatten
   end
@@ -37,8 +42,8 @@ class LineEntryPropertiesToHtmlInputsMapper
     content_tag(:label, title.titleize, for: input_id)
   end
 
-  def build_input(name, input_id, property)
-    content_tag(:input, nil, name: name, id: input_id,
+  def build_input(name, input_id, property, value)
+    content_tag(:input, nil, name: name, id: input_id, value: value,
       required: make_it_required(property))
   end
 

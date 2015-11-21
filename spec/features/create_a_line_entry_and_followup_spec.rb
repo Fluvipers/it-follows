@@ -43,11 +43,21 @@ feature "Create a new line entry and enter followups for that entry" do
         line_entry = line.line_entries.first
 
         expect(line_entry.data["title"]).to eq "A new novel proposal"
+        expect(line_entry.data["advertiser"]).to eq "Havas"
+        expect(line_entry.data["client"]).to eq "Cocacola"
 
         expect(current_path).to eq "/proposals/#{line_entry.id}/edit"
 
         within("#line-entry-form") do
           expect(page).to have_selector("#followups")
+
+          expect(page.find_field("Title").value).to eq "A new novel proposal"
+          expect(page.find_field("Advertiser").value).to eq "Havas"
+          expect(page.find_field("Client").value).to eq "Cocacola"
+
+          fill_in 'Title', with: 'New title'
+          fill_in 'Advertiser', with: 'new advertiser'
+          fill_in 'Client', with: 'new client'
         end
 
         within("#followups") do
@@ -60,6 +70,11 @@ feature "Create a new line entry and enter followups for that entry" do
         click_on 'Submit'
 
         line_entry.reload
+
+        expect(line_entry.data["title"]).to eq "New title"
+        expect(line_entry.data["advertiser"]).to eq "new advertiser"
+        expect(line_entry.data["client"]).to eq "new client"
+
         expect(line_entry.followups.count).to eq 1
         followup = line_entry.followups.first
         expect(followup.tasks.count).to eq 2
@@ -92,7 +107,7 @@ feature "Create a new line entry and enter followups for that entry" do
 
         expect(current_path).to eq '/proposals'
 
-        expect(page).to have_content("A new novel proposal")
+        expect(page).to have_content("New title")
         expect(page).to have_content("wendy")
         expect(page).to have_content("10%")
       end

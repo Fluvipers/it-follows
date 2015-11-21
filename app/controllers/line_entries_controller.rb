@@ -19,9 +19,10 @@ class LineEntriesController < ApplicationController
   end
 
   def create
-    @line_entry = current_user.line_entries.new
-    @line_entry.data = params[:line_entry][:data]
-    @line_entry.line = Line.last
+    line = Line.last
+
+    @line_entry = current_user.line_entries.new(line_entry_params(line))
+    @line_entry.line = line
 
     if @line_entry.save
       redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
@@ -37,17 +38,18 @@ class LineEntriesController < ApplicationController
     @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
     line = Line.last
-    @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties).map_properties.join("").html_safe
+    @inputs = LineEntryPropertiesToHtmlInputsMapper.new([:line_entry, :data], line.properties, @line_entry.data).map_properties.join("").html_safe
   end
 
   def update
+    line = Line.last
+
     @line_entry = current_user.line_entries.find(params[:id])
-    x = line_entry_params.merge(line: Line.last)
+    x = line_entry_params(line).merge(line: line)
     tasks = x["followups_attributes"]["0"].delete("tasks")
     tasks = tasks.split("xx")
 
     @line_entry.update(x)
-    @line_entry.data = params[:line_entry][:data]
     followup = @line_entry.followups.last
     followup.tasks.build(description: tasks[0])
     followup.tasks.build(description: tasks[1])
@@ -67,11 +69,8 @@ class LineEntriesController < ApplicationController
     HashtagFinder.new(description).find_hashtags
   end
 
-  def mapper_properties_to_html
-    LineEntryPropertiesToHtmlInputsMapper.new(:data).map_properties
-  end
-
-  def line_entry_params
-    params.require(:line_entry).permit(:data, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]]) 
+  def line_entry_params(line)
+    line_properties = line.properties.map { |property| property["name"].downcase.to_sym }
+    params.require(:line_entry).permit(data: line_properties, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]])
   end
 end
