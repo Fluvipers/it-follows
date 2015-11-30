@@ -3,7 +3,7 @@ require "hashtag_finder"
 require "line_entry_properties_to_html_inputs_mapper"
 
 class LineEntriesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, expect: [:create]
 
   def index
     @line_entries = find_line.line_entries
@@ -21,10 +21,14 @@ class LineEntriesController < ApplicationController
     @line_entry = current_user.line_entries.new(line_entry_params)
     @line_entry.line = find_line
 
-    if @line_entry.save
-      redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
-    else
-      render 'new'
+    respond_to do |format|
+      if @line_entry.save
+        format.html { redirect_to edit_line_entry_path(params[:line_entries], @line_entry) }
+        format.json { render json: {line_entry_path: edit_line_entry_url(params[:line_entries], @line_entry) }, status: :created}
+      else
+        format.html { render :new }
+        format.json { render json: @line_entry.errors, status: :unprocessable_entity }
+      end
     end
   end
 
