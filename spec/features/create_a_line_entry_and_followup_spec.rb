@@ -5,6 +5,7 @@ feature "Create a new line entry and enter followups for that entry" do
     context "As a logged user" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../spec/fixtures', __FILE__)
+
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
 
@@ -39,12 +40,27 @@ feature "Create a new line entry and enter followups for that entry" do
           click_on 'Submit'
         end
 
+        within(".nav") do
+          click_on 'Support tickets'
+        end
+
+        expect(current_path).to eq '/support_tickets'
+
+        expect(page).to have_content("A new novel proposal")
+        expect(page).to have_content("wendy")
+        expect(page).to have_content("0%")
+
         expect(line.line_entries.count).to eq 1
+
         line_entry = line.line_entries.first
 
         expect(line_entry.data["title"]).to eq "A new novel proposal"
         expect(line_entry.data["advertiser"]).to eq "Havas"
         expect(line_entry.data["client"]).to eq "Cocacola"
+
+        within("table tbody tr:first") do
+          click_on "Edit"
+        end
 
         expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
 

@@ -5,9 +5,11 @@
       %th Something
       %th Name
       %th Progress
+      %th
   %tbody
     - @line_entries.each do |entry|
       %tr
         %td= entry.data["title"]
         %td= entry.user.first_name
-        %td= "#{entry.followups.last.percentage}%"
+        %td= "#{entry.current_percentage}%"
+        %td= link_to "Edit", edit_line_entry_path(params[:line_entries], entry)
