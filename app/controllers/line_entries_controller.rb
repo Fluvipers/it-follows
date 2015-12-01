@@ -58,9 +58,11 @@ class LineEntriesController < ApplicationController
 
     attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
     followup.documents = attachments 
-    followup.save!
-
-    redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
+    if followup.save
+      redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
+    else
+      render :edit
+    end
   end
     
   private

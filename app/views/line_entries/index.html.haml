@@ -11,5 +11,9 @@
       %tr
         %td= entry.data["title"]
         %td= entry.user.first_name
-        %td= "#{entry.current_percentage}%"
+        %td
+          .progress
+            .progress-bar{role: "progressbar", "aria-valuenow"=>entry.current_percentage,
+              "aria-valuemin"=>"0", "aria-valuemax" => "100", style: "width: #{entry.current_percentage}%;"}
+              = "#{entry.current_percentage}% Complete"
         %td= link_to "Edit", edit_line_entry_path(params[:line_entries], entry)

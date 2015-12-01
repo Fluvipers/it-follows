@@ -10,4 +10,8 @@ class LineEntry < ActiveRecord::Base
   def current_percentage
     followups.last.try(:percentage).to_i
   end
+
+  def needs_followup?
+    current_percentage < 100
+  end
 end
