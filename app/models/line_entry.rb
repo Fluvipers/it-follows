@@ -6,4 +6,8 @@ class LineEntry < ActiveRecord::Base
   has_many :tasks, through: :followups
 
   accepts_nested_attributes_for :followups
+
+  def current_percentage
+    followups.last.try(:percentage).to_i
+  end
 end
