@@ -24,7 +24,7 @@ class LineEntriesController < ApplicationController
     respond_to do |format|
       if @line_entry.save
         format.html { redirect_to edit_line_entry_path(params[:line_entries], @line_entry) }
-        format.json { render json: {line_entry_path: edit_line_entry_url(params[:line_entries], @line_entry) }, status: :created}
+        format.json { render json: {id: @line_entry.id, line_entry_path: edit_line_entry_url(params[:line_entries], @line_entry) }, status: :created}
       else
         format.html { render :new }
         format.json { render json: @line_entry.errors, status: :unprocessable_entity }
