@@ -63,6 +63,14 @@ class LineEntriesController < ApplicationController
     else
       render :edit
     end
+
+
+    file_attach = Attachment.new
+    file_attach.followup_id = followup.id
+    #se rompe porque dice que no puede convertir nil to string
+    file_attach.file = attachments
+    file_attach.save!
+
   end
     
   private
@@ -76,7 +84,10 @@ class LineEntriesController < ApplicationController
   end
 
   def line_entry_params
-    params.require(:line_entry).permit(data: line_properties, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]])
+  end
+
+  def attachment_params
+    params.require(:attachment).permit(:followup_id, :file)
   end
 
   def find_line

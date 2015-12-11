@@ -15,6 +15,7 @@ gem 'hstore_accessor'
 gem "jsonb_accessor"
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem "simple_token_authentication", "~> 1.0"
+gem 'rmagick', '~> 2.15', '>= 2.15.4'
 
 group :development, :test do
   gem 'rspec-rails'
