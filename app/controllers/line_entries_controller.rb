@@ -32,6 +32,18 @@ class LineEntriesController < ApplicationController
     end
   end
 
+  def external_edit
+    @line_entry = current_user.line_entries.find(params[:id])
+    @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
+    @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
+
+    @url = "/#{params[:line_entries]}/#{params[:id]}"
+    @method = 'patch'
+
+    @properties_inputs = build_properties_inputs(@line_entry.data)
+    render layout: "external"
+  end
+
   def edit
     @line_entry = current_user.line_entries.find(params[:id])
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
