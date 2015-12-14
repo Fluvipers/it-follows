@@ -16,6 +16,7 @@ gem "jsonb_accessor"
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem "simple_token_authentication", "~> 1.0"
 gem "unicorn-rails"
+gem 'mandrill_mailer'
 
 group :development, :test do
   gem 'rspec-rails'

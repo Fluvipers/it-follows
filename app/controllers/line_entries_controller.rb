@@ -77,6 +77,8 @@ class LineEntriesController < ApplicationController
     else
       render :edit
     end
+    @user = User.last
+    TaskMailer.welcome_email(@user).deliver
   end
     
   private
