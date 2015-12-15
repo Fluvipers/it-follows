@@ -1,13 +1,12 @@
 class TaskMailer < MandrillMailer::MessageMailer
   default from: 'mariavelandia@fluvip.com'
 
-  def welcome_email(user)
-    @user = user
+  def task_email(email, url)
     mandrill_mail(
-      subject: "buajaaaj",
-      to: "mariavelandia@fluvip.com",
+      subject: "Ha sido mencionado en una tarea",
+      to: email,
       text: "Example text content",
-      html: "<p>Example HTML content</p>",
+      html: "<p>Haga click en el siguiente enlace #{url}</p>",
       important: true,
       inline_css: true,
     )

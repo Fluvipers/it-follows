@@ -77,11 +77,32 @@ class LineEntriesController < ApplicationController
     else
       render :edit
     end
-    @user = User.last
-    TaskMailer.welcome_email(@user).deliver
+
+    mentions = find_all_mentions(followup)
+    find_mail_by_mentions(mentions).each{ |mail| send_email_involved_users(mail, create_url_by_line)}
+
   end
     
   private
+
+  def find_all_mentions(followup)
+    mentions = show_mentions(followup.description)
+    mentions.concat(followup.tasks.map{ |task| show_mentions(task.description)})
+    mentions.uniq
+  end
+
+  def send_email_involved_users(user_email, url)
+    TaskMailer.task_email(user_email, url).deliver
+  end
+
+  def create_url_by_line
+    line = @line_entry.line
+    "www.it_follows.com/#{line.slug_name}/#{@line_entry.id}/edit"
+  end
+
+  def find_mail_by_mentions(mentions)
+   mentions.map {|u_sn| User.where(screen_name: u_sn)[0].email || 'soporte@fluvip.com'}
+  end
 
   def show_mentions(description)
     MentionFinder.new(description).find_mentions
