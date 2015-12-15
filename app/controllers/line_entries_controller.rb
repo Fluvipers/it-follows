@@ -101,7 +101,7 @@ class LineEntriesController < ApplicationController
   end
 
   def find_mail_by_mentions(mentions)
-   mentions.map {|u_sn| User.where(screen_name: u_sn)[0].email || 'soporte@fluvip.com'}
+   mentions.map {|u_sn| User.where(screen_name: u_sn)[0].email if User.where(screen_name: u_sn).present?}.compact
   end
 
   def show_mentions(description)
