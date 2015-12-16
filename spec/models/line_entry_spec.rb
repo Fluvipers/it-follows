@@ -18,8 +18,8 @@ RSpec.describe LineEntry, type: :model do
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and #data is {}" do
@@ -28,8 +28,8 @@ RSpec.describe LineEntry, type: :model do
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
     end
@@ -39,16 +39,16 @@ RSpec.describe LineEntry, type: :model do
         it "adds an error message for the missing required fields" do
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
-          entry.errors.should have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and #data is {}" do
         it "adds an error message for the missing required fields" do
           entry = cashout.line_entries.new(user: user, data: {})
           entry.valid?
-          entry.errors.should have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and data has values but misses some required properties" do
@@ -58,17 +58,17 @@ RSpec.describe LineEntry, type: :model do
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should have_key :Number_post
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should have_key :number_post
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and data has values for all required properties" do
         it "should not add error messages" do
           entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
     end

@@ -32,7 +32,6 @@ feature "Create a new line entry and enter followups for that entry" do
         expect(current_path).to eq '/support_tickets/new'
 
         within("#line-entry-form") do
-
           fill_in 'Title', with: ''
           fill_in 'Advertiser', with: ''
           fill_in 'Client', with: ''

@@ -8,7 +8,6 @@ class LineEntry < ActiveRecord::Base
   accepts_nested_attributes_for :followups
   validates_presence_of :data
   validate :validation_parameters
-  before_save :validation_parameters
 
   def current_percentage
     followups.last.try(:percentage).to_i
@@ -19,9 +18,8 @@ class LineEntry < ActiveRecord::Base
   end
 
   def validation_parameters
-    number_params = self.data.count
-    fields = self.data.first(number_params).map{|value| value[0] unless value[1].empty?}
-    self.errors.add(:data, "Faltan datos por ingresar") if  (fields.any? &:nil?)
+    required_properties = self.line.properties.map {|property| property["name"] if property["required"]}.compact
+    name_rule = required_properties.map {|f| f if (self.data[f].nil? || self.data[f].empty?)}
+    name_rule.each { |p| errors.add(p.to_sym, "El campo #{p} no puede estar vacio") if true} 
   end
-
 end
