@@ -4,6 +4,74 @@ RSpec.describe LineEntry, type: :model do
   it { should belong_to(:user) }
   it { should belong_to(:line) }
 
+  describe "validate creation of a new line" do
+    let(:user) { User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
+               password_confirmation: '12345678', confirmed_at: Time.now) }
+
+    let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
+               {name: 'Influencer', required: false}]) }
+
+    context "when the line has no required properties" do
+      context "and #data is nil" do
+        it "should not create line entry" do
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
+          cashout.save!
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.new(user: user, data: nil)
+          expect(LineEntry.count).to eq 0
+          expect(entry.save).to eq false
+        end
+      end
+      context "and #data is {}" do
+        it "should not create line entry" do
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
+          cashout.save!
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.new(user: user, data: {})
+          expect(LineEntry.count).to eq 0
+          expect(entry.save).to   eq false
+        end
+      end
+    end
+
+    context "when the line has required properties" do
+      context "and #data is nil" do
+        it "should not create line entry" do
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.new(user: user, data: nil)
+          expect(LineEntry.count).to eq 0
+          expect(entry.save).to eq false
+        end
+      end
+      context "and #data is {}" do
+        it "should not create line entry" do
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.new(user: user, data: {})
+          expect(LineEntry.count).to eq 0
+          expect(entry.save).to eq false
+        end
+      end
+      context "and data has values but misses some required properties" do
+        it "should not create line entry" do
+          cashout.properties = [{name: 'number_post', required: true}, {name: 'campaign', required: true}, 
+                                {name: 'influencer', required: false}]
+          cashout.save!
+          entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
+          expect(LineEntry.count).to   eq 0
+          expect(entry.save).to eq false
+        end
+      end
+      context "and data has values for all required properties" do
+        it "should create line entry" do
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
+          expect(LineEntry.count).to eq 1
+          expect(entry.save).to eq true
+        end
+      end
+    end
+  end
+
   describe "#validation_parameters" do
     let(:user) { User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
                password_confirmation: '12345678', confirmed_at: Time.now) }
