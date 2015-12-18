@@ -4,6 +4,74 @@ RSpec.describe LineEntry, type: :model do
   it { should belong_to(:user) }
   it { should belong_to(:line) }
 
+  describe "validate creation of a new line" do
+    let(:user) { User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
+               password_confirmation: '12345678', confirmed_at: Time.now) }
+
+    let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
+               {name: 'Influencer', required: false}]) }
+
+    context "when the line has no required properties" do
+      context "and #data is nil" do
+        it "should not create line entry" do
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
+          cashout.save!
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: nil)
+          expect(entry.save).to eq false
+          expect(LineEntry.count).to eq 0
+        end
+      end
+      context "and #data is {}" do
+        it "should not create line entry" do
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
+          cashout.save!
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: {})
+          expect(entry.save).to eq false
+          expect(LineEntry.count).to eq 0
+        end
+      end
+    end
+
+    context "when the line has required properties" do
+      context "and #data is nil" do
+        it "should not create line entry" do
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: nil)
+          expect(entry.save).to eq false
+          expect(LineEntry.count).to eq 0
+        end
+      end
+      context "and #data is {}" do
+        it "should not create line entry" do
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: {})
+          expect(entry.save).to eq false
+          expect(LineEntry.count).to eq 0
+        end
+      end
+      context "and data has values but misses some required properties" do
+        it "should not create line entry" do
+          cashout.properties = [{name: 'number_post', required: true}, {name: 'campaign', required: true}, 
+                                {name: 'influencer', required: false}]
+          cashout.save!
+          entry = cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon"})
+          expect(entry.save).to eq false
+          expect(LineEntry.count).to   eq 0
+        end
+      end
+      context "and data has values for all required properties" do
+        it "should create line entry" do
+          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon"})
+          expect(entry.save).to eq true
+          expect(LineEntry.count).to eq 1
+        end
+      end
+    end
+  end
+
   describe "#validation_parameters" do
     let(:user) { User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
                password_confirmation: '12345678', confirmed_at: Time.now) }
@@ -14,22 +82,22 @@ RSpec.describe LineEntry, type: :model do
     context "when the line has no required properties" do
       context "and #data is nil" do
         it "should not add error messages" do
-          cashout.properties = [{name: 'Campaign', required: false}, {name: 'Influencer', required: false}]
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and #data is {}" do
         it "should not add error messages" do
-          cashout.properties = [{name: 'Campaign', required: false}, {name: 'Influencer', required: false}]
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
     end
@@ -39,36 +107,36 @@ RSpec.describe LineEntry, type: :model do
         it "adds an error message for the missing required fields" do
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
-          entry.errors.should have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and #data is {}" do
         it "adds an error message for the missing required fields" do
           entry = cashout.line_entries.new(user: user, data: {})
           entry.valid?
-          entry.errors.should have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and data has values but misses some required properties" do
         it "adds an error message for the missing required fields" do
-          cashout.properties = [{name: 'number_post', required: true}, {name: 'Campaign', required: true}, 
-                                {name: 'Influencer', required: false}]
+          cashout.properties = [{name: 'number_post', required: true}, {name: 'campaign', required: true}, 
+                                {name: 'influencer', required: false}]
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should have_key :Number_post
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should have_key :number_post
+          entry.errors.should_not have_key :influencer
         end
       end
       context "and data has values for all required properties" do
         it "should not add error messages" do
           entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
           entry.valid?
-          entry.errors.should_not have_key :Campaign
-          entry.errors.should_not have_key :Influencer
+          entry.errors.should_not have_key :campaign
+          entry.errors.should_not have_key :influencer
         end
       end
     end

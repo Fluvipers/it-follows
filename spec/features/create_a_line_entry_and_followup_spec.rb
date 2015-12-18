@@ -3,11 +3,56 @@ require 'rails_helper'
 feature "Create a new line entry and enter followups for that entry" do
   context "When there is a line called 'Support tickets' available on the nav menu" do
     context "As a logged user" do
+      scenario "I want create a new Proposal but I don't set some field" do
+
+        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
+               password_confirmation: '12345678', confirmed_at: Time.now)
+
+        line = user.lines.create!(name: 'Support Tickets',
+          properties: [{name: 'Title', required: true}, {name: 'Advertiser', required: true}, 
+          {name: 'Client', required: true} ])
+
+        visit new_user_session_path
+
+        within("#new_user") do
+          fill_in "Email", with: user.email
+          fill_in "Password", with: '12345678'
+          click_button "Log in"
+        end
+
+        within(".nav") do
+          click_on 'Support tickets'
+        end
+
+        expect(current_path).to eq '/support_tickets'
+        expect(Line.last.line_entries.count).to   eq(0)
+
+        click_on 'New'
+
+        expect(current_path).to eq '/support_tickets/new'
+
+        within("#line-entry-form") do
+          fill_in 'Title', with: ''
+          fill_in 'Advertiser', with: ''
+          fill_in 'Client', with: ''
+          click_on 'Submit'
+        end
+
+        expect(Line.last.line_entries.count).to   eq(0)
+        expect(page).to have_content("There's some fields without data.")
+        expect(current_path).to eq '/support_tickets/new'
+
+      end
+    end
+  end
+
+  context "When there is a line called 'Support tickets' available on the nav menu" do
+    context "As a logged user" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../spec/fixtures', __FILE__)
 
-        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
-          password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
+        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
+               password_confirmation: '12345678', confirmed_at: Time.now)
 
         line = user.lines.create!(name: 'Support Tickets',
           properties: [{name: 'Title', required: true}, {name: 'Advertiser', required: true}, 
@@ -127,6 +172,17 @@ feature "Create a new line entry and enter followups for that entry" do
         expect(page).to have_content("New title")
         expect(page).to have_content("wendy")
         expect(page).to have_content("10%")
+      end
+    end
+
+    context "as an anonymous user" do
+      scenario "I should not be able to create new line entries" do
+        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
+          password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
+        line = user.lines.create!(name: 'Proposals')
+        visit root_path
+        click_on "Proposals"
+        expect(current_path).to eq new_user_session_path
       end
     end
 

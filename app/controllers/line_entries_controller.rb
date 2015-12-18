@@ -26,8 +26,9 @@ class LineEntriesController < ApplicationController
         format.html { redirect_to edit_line_entry_path(params[:line_entries], @line_entry) }
         format.json { render json: {id: @line_entry.id, line_entry_path: edit_line_entry_url(params[:line_entries], @line_entry) }, status: :created}
       else
-        format.html { render :new }
+        format.html { redirect_to new_line_entries_path}
         format.json { render json: @line_entry.errors, status: :unprocessable_entity }
+        flash[:notice] = "There's some fields without data."
       end
     end
   end
@@ -77,9 +78,32 @@ class LineEntriesController < ApplicationController
     else
       render :edit
     end
+
+    mentions = find_all_mentions(followup)
+    find_mail_by_mentions(mentions).each{ |mail| send_email_involved_users(mail, create_url_by_line)}
+
   end
     
   private
+
+  def find_all_mentions(followup)
+    mentions = show_mentions(followup.description)
+    mentions.concat(followup.tasks.map{ |task| show_mentions(task.description)})
+    mentions.uniq
+  end
+
+  def send_email_involved_users(user_email, url)
+    TaskMailer.task_email(user_email, url).deliver
+  end
+
+  def create_url_by_line
+    line = @line_entry.line
+    "www.it_follows.com/#{line.slug_name}/#{@line_entry.id}/edit"
+  end
+
+  def find_mail_by_mentions(mentions)
+   mentions.map {|u_sn| User.where(screen_name: u_sn)[0].email if User.where(screen_name: u_sn).present?}.compact
+  end
 
   def show_mentions(description)
     MentionFinder.new(description).find_mentions
