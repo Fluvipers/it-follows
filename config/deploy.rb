@@ -13,7 +13,7 @@ set :user, "deploy"
 set :use_sudo, false 
 set :ssh_options, { forward_agent: true }
 set :rvm_type, :user
-set :rvm_ruby_version, '2.2.3  @it_follows'
+set :rvm_ruby_version, '2.2.3@it_follows'
 
 namespace :deploy do
 
