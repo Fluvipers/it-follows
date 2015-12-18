@@ -17,9 +17,9 @@ RSpec.describe LineEntry, type: :model do
           cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
           cashout.save!
           expect(LineEntry.count).to eq 0
-          entry = cashout.line_entries.new(user: user, data: nil)
-          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: nil)
           expect(entry.save).to eq false
+          expect(LineEntry.count).to eq 0
         end
       end
       context "and #data is {}" do
@@ -27,9 +27,9 @@ RSpec.describe LineEntry, type: :model do
           cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
           cashout.save!
           expect(LineEntry.count).to eq 0
-          entry = cashout.line_entries.new(user: user, data: {})
+          entry = cashout.line_entries.create(user: user, data: {})
+          expect(entry.save).to eq false
           expect(LineEntry.count).to eq 0
-          expect(entry.save).to   eq false
         end
       end
     end
@@ -38,17 +38,17 @@ RSpec.describe LineEntry, type: :model do
       context "and #data is nil" do
         it "should not create line entry" do
           expect(LineEntry.count).to eq 0
-          entry = cashout.line_entries.new(user: user, data: nil)
-          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: nil)
           expect(entry.save).to eq false
+          expect(LineEntry.count).to eq 0
         end
       end
       context "and #data is {}" do
         it "should not create line entry" do
           expect(LineEntry.count).to eq 0
-          entry = cashout.line_entries.new(user: user, data: {})
-          expect(LineEntry.count).to eq 0
+          entry = cashout.line_entries.create(user: user, data: {})
           expect(entry.save).to eq false
+          expect(LineEntry.count).to eq 0
         end
       end
       context "and data has values but misses some required properties" do
@@ -56,17 +56,17 @@ RSpec.describe LineEntry, type: :model do
           cashout.properties = [{name: 'number_post', required: true}, {name: 'campaign', required: true}, 
                                 {name: 'influencer', required: false}]
           cashout.save!
-          entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
-          expect(LineEntry.count).to   eq 0
+          entry = cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon"})
           expect(entry.save).to eq false
+          expect(LineEntry.count).to   eq 0
         end
       end
       context "and data has values for all required properties" do
         it "should create line entry" do
           expect(LineEntry.count).to eq 0
-          entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
-          expect(LineEntry.count).to eq 1
+          entry = cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon"})
           expect(entry.save).to eq true
+          expect(LineEntry.count).to eq 1
         end
       end
     end
