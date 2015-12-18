@@ -19,7 +19,21 @@ class LineEntry < ActiveRecord::Base
 
   def validation_parameters
     required_properties = self.line.properties.map {|property| property["name"] if property["required"]}.compact
-    name_rule = required_properties.map {|f| f if (self.data[f].nil? || self.data[f].empty?)}
-    name_rule.each { |p| errors.add(p.to_sym, "El campo #{p} no puede estar vacio") if true} 
+                          .map{ |property| property.downcase }
+    has_not_data? ? errors_for_no_data(required_properties) : adds_errors_for_data_missed(required_properties)
+  end
+
+  def has_not_data?
+    self.data.nil? || self.data.empty?
+  end
+
+  def adds_errors_for_data_missed(required_properties)
+
+    name_rule = required_properties.map {|f| f if (self.data[f].nil? || self.data[f].empty?)}.compact
+    name_rule.each { |p| errors.add(p.to_sym, "El campo #{p} no puede estar vacio") if true}
+  end
+
+  def errors_for_no_data(required_properties)
+    required_properties.each { |p| errors.add(p.to_sym, "El campo #{p} no puede estar vacio") if true}
   end
 end

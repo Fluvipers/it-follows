@@ -14,7 +14,7 @@ RSpec.describe LineEntry, type: :model do
     context "when the line has no required properties" do
       context "and #data is nil" do
         it "should not add error messages" do
-          cashout.properties = [{name: 'Campaign', required: false}, {name: 'Influencer', required: false}]
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
@@ -24,7 +24,7 @@ RSpec.describe LineEntry, type: :model do
       end
       context "and #data is {}" do
         it "should not add error messages" do
-          cashout.properties = [{name: 'Campaign', required: false}, {name: 'Influencer', required: false}]
+          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
@@ -53,8 +53,8 @@ RSpec.describe LineEntry, type: :model do
       end
       context "and data has values but misses some required properties" do
         it "adds an error message for the missing required fields" do
-          cashout.properties = [{name: 'number_post', required: true}, {name: 'Campaign', required: true}, 
-                                {name: 'Influencer', required: false}]
+          cashout.properties = [{name: 'number_post', required: true}, {name: 'campaign', required: true}, 
+                                {name: 'influencer', required: false}]
           cashout.save!
           entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
           entry.valid?
