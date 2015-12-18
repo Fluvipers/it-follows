@@ -33,3 +33,6 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano-rails'
 end
+group :production, :staging do
+  gem 'unicorn'
+end
