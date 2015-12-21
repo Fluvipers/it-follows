@@ -125,7 +125,7 @@ feature "Create a new line entry and enter followups for that entry" do
           fill_in 'Activity details', with: '@dave and I visited the client, they need #sports and #fashion'
           fill_in 'Completion percentage', with: '10'
           find("#line_entry_followups_attributes_0_tasks").set('call the client')
-          attach_file('Attachments', "#{file_path}/minute.doc")
+          attach_file('Attachments', "#{Rails.root}/image.jpg")
         end
 
         click_on 'Submit'
@@ -143,9 +143,11 @@ feature "Create a new line entry and enter followups for that entry" do
         expect(task.description).to eq "call the client"
         expect(task.user).to eq user
 
-        expect(followup.documents.count).to eq 1
-        attachment = followup.documents.first
-        expect(attachment["original_filename"]).to eq 'minute.doc'
+        expect(followup.attached_documents.count).to eq 1
+        expect(page).to have_link("#{followup.attached_documents.last.document.file.filename}")
+        attachment = followup.attached_documents.first
+
+        expect(attachment.document.url).to eq '/uploads/attached_document/document/1/image.jpg'
 
         expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
 
