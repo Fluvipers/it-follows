@@ -33,6 +33,9 @@
           .media-body
             %h4.media-body= followup.description
             = "#{followup.percentage}%"
+            -followup.attached_documents.each do |attached_doc|
+              %h4.media-body
+              = link_to attached_doc.document.file.filename, "#{attached_doc.document.url}"
 
       - if @line_entry.needs_followup?
         .well
