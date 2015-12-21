@@ -34,6 +34,6 @@ group :development do
   gem 'capistrano-rails'
 end
 group :production, :staging do
-gem "unicorn-rails"
+  gem "unicorn-rails"
   gem 'unicorn'
 end
