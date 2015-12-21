@@ -56,7 +56,7 @@ RSpec.describe AttachedDocument, type: :model do
         document.followup_id = followup.id
         document.save
 
-        expect(document.document.url).to eq "/uploads/attached_document/document/1/image.jpg"
+        expect(document.document.url).to eq "/uploads/attached_document/document/2/image.jpg"
       end
     end
   end

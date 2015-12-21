@@ -73,6 +73,9 @@ class LineEntriesController < ApplicationController
 
     attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
     followup.documents = attachments 
+
+    attachments.each {|x| followup.attached_documents.create!(document: x)}
+
     if followup.save
       redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
     else
