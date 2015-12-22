@@ -142,7 +142,7 @@ feature "Create a new line entry and enter followups for that entry" do
         expect(page).to have_link("#{followup.attached_documents.last.document.file.filename}")
         attachment = followup.attached_documents.first
 
-        expect(attachment.document.url).to eq '/uploads/attached_document/document/1/image.jpg'
+        expect(attachment.document.url).to eq "/uploads/attached_document/document/#{attachment.id}/image.jpg"
 
         expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
 

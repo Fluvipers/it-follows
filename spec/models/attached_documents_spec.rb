@@ -13,16 +13,13 @@ RSpec.describe AttachedDocument, type: :model do
 
     let (:followup) { Followup.create!(line_entry: entry , user: user, description: "Esta es una linda prueba", percentage: 2) }
 
-
     context "should validate followup_id and document" do
       it "shouldn't create and attached_document" do
         document = AttachedDocument.new
         document.followup_id = followup.id
 
         expect(AttachedDocument.count).to eq 0
-
         expect(document.save).to eq false
-
         expect(AttachedDocument.count).to eq 0
       end
 
@@ -33,9 +30,7 @@ RSpec.describe AttachedDocument, type: :model do
         end
 
         expect(AttachedDocument.count).to eq 0
-
         expect(document.save).to eq false
-
         expect(AttachedDocument.count).to eq 0
       end
 
@@ -47,13 +42,11 @@ RSpec.describe AttachedDocument, type: :model do
         document.followup_id = followup.id
 
         expect(AttachedDocument.count).to eq 0
-
         expect(document.save).to eq true
-
         expect(AttachedDocument.count).to eq 1
       end
 
-      it "should return the carrierwave url" do
+      it "should return the attachment url" do
         document = AttachedDocument.new
         File.open(File.join("#{Rails.root}/image.jpg"), 'r') do |file|
           document.document = file
@@ -61,7 +54,7 @@ RSpec.describe AttachedDocument, type: :model do
         document.followup_id = followup.id
         document.save
 
-        expect(document.document.url).to eq "/uploads/attached_document/document/3/image.jpg"
+        expect(document.document.url).to eq "/uploads/attached_document/document/#{document.id}/image.jpg"
       end
     end
   end
