@@ -29,7 +29,9 @@ RSpec.describe AttachedDocument, type: :model do
 
       it "shouldn't create and attached_document" do
         document = AttachedDocument.new
-        document.document = File.open(File.join("#{Rails.root}/image.jpg"), 'r')
+        File.open(File.join("#{Rails.root}/image.jpg"), 'r') do |file|
+          document.document = file
+        end
 
         expect(AttachedDocument.count).to eq 0
 
@@ -40,7 +42,9 @@ RSpec.describe AttachedDocument, type: :model do
 
       it "should create and attached_document" do
         document = AttachedDocument.new
-        document.document = File.open(File.join("#{Rails.root}/image.jpg"), 'r')
+        File.open(File.join("#{Rails.root}/image.jpg"), 'r') do |file|
+          document.document = file
+        end
         document.followup_id = followup.id
 
         expect(AttachedDocument.count).to eq 0
@@ -52,11 +56,13 @@ RSpec.describe AttachedDocument, type: :model do
 
       it "should return the carrierwave url" do
         document = AttachedDocument.new
-        document.document = File.open(File.join("#{Rails.root}/image.jpg"), 'r')
+        File.open(File.join("#{Rails.root}/image.jpg"), 'r') do |file|
+          document.document = file
+        end
         document.followup_id = followup.id
         document.save
 
-        expect(document.document.url).to eq "/uploads/attached_document/document/2/image.jpg"
+        expect(document.document.url).to eq "/uploads/attached_document/document/3/image.jpg"
       end
     end
   end
