@@ -4,8 +4,7 @@ RSpec.describe AttachedDocument, type: :model do
   it { should belong_to(:followup) }
 
   describe "validate creation of new attached_documents" do
-    let(:user) { User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
-               password_confirmation: '12345678', confirmed_at: Time.now) }
+    let(:user) { FactoryGirl.create(:user) }
 
     let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
                {name: 'Influencer', required: false}]) }

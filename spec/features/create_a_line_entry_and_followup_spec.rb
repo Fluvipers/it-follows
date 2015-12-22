@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 feature "Create a new line entry and enter followups for that entry" do
+  let (:user) { user = FactoryGirl.create(:user) }
   context "When there is a line called 'Support tickets' available on the nav menu" do
     context "As a logged user" do
       scenario "I want create a new Proposal but I don't set some field" do
-
-        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
-               password_confirmation: '12345678', confirmed_at: Time.now)
 
         line = user.lines.create!(name: 'Support Tickets',
           properties: [{name: 'Title', required: true}, {name: 'Advertiser', required: true}, 
@@ -16,7 +14,7 @@ feature "Create a new line entry and enter followups for that entry" do
 
         within("#new_user") do
           fill_in "Email", with: user.email
-          fill_in "Password", with: '12345678'
+          fill_in "Password", with: user.password
           click_button "Log in"
         end
 
@@ -51,9 +49,6 @@ feature "Create a new line entry and enter followups for that entry" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../spec/fixtures', __FILE__)
 
-        user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
-               password_confirmation: '12345678', confirmed_at: Time.now)
-
         line = user.lines.create!(name: 'Support Tickets',
           properties: [{name: 'Title', required: true}, {name: 'Advertiser', required: true}, 
           {name: 'Client', required: true} ])
@@ -62,7 +57,7 @@ feature "Create a new line entry and enter followups for that entry" do
 
         within("#new_user") do
           fill_in "Email", with: user.email
-          fill_in "Password", with: '12345678'
+          fill_in "Password", with: user.password
           click_button "Log in"
         end
 
