@@ -86,6 +86,8 @@ GEM
     erubis (2.7.0)
     excon (0.45.4)
     execjs (2.6.0)
+    factory_girl (4.5.0)
+      activesupport (>= 3.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     haml (4.0.7)
@@ -237,6 +239,7 @@ DEPENDENCIES
   carrierwave!
   database_cleaner
   devise
+  factory_girl
   haml
   hstore_accessor
   jbuilder (~> 2.0)
@@ -256,4 +259,4 @@ DEPENDENCIES
   unicorn-rails
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
