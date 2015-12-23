@@ -67,14 +67,13 @@ class LineEntriesController < ApplicationController
     @line_entry.update(x)
     followup = @line_entry.followups.last
 
+    attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
+
     tasks.each do |t|
       followup.tasks.build(description: t, user: current_user)
     end
 
-    attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
-    followup.documents = attachments 
-
-    attachments.each {|x| followup.attached_documents.create!(document: x)}
+    attachments.each {|x| followup.attached_documents.build(document: x)} unless attachments.nil?
 
     if followup.save
       redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
