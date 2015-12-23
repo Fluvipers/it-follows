@@ -4,7 +4,7 @@ RSpec.describe LineEntry, type: :model do
   it { should belong_to(:user) }
   it { should belong_to(:line) }
 
-  describe "validate creation of a new line" do
+  describe "validate creation of a new line_entry" do
     let(:user) { FactoryGirl.create(:user) }
 
     let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
@@ -166,6 +166,66 @@ RSpec.describe LineEntry, type: :model do
       it "should return 0" do
         subject.followups = []
         expect(subject.current_percentage).to eq 0
+      end
+    end
+  end
+
+  describe "when the line entry is edited" do
+    let(:user) { FactoryGirl.create(:user) }
+
+    let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
+               {name: 'Influencer', required: false}]) }
+
+    let(:entry) { cashout.line_entries.create!(user: user, data: {campaign: "Nickelodeon"}) }
+
+    context "and there is followup" do
+      context "and there is a task" do
+        context "and the task is valid" do
+          it "should create the task and the followup" do
+            followup = entry.followups.new
+            followup.user_id = user.id
+            followup.description = "Un nuevo followup"
+            followup.percentage = 8
+
+            tasks = followup.tasks.build(user: user, description: 'Nueva Tarea')
+
+            expect(Followup.count).to eq 0
+            expect(Task.count).to eq 0
+            expect(followup.save).to eq true
+            expect(Followup.count).to eq 1
+            expect(Task.count).to eq 1
+          end
+        end
+        context "and the task is not valid" do
+          it "should not create the task and the followup" do
+            followup = entry.followups.new
+            followup.user_id = user.id
+            followup.description = "Un nuevo followup"
+            followup.percentage = 8
+
+            tasks = followup.tasks.build(user: user)
+
+            expect(Followup.count).to eq 0
+            expect(Task.count).to eq 0
+            expect(followup.save).to eq false
+            expect(Followup.count).to eq 0
+            expect(Task.count).to eq 0
+          end
+        end
+      end
+      context "and there is no task" do
+        it "should not create a task and should create the followup" do
+          followup = entry.followups.new
+          followup.user_id = user.id
+          followup.description = "Un nuevo followup"
+          followup.percentage = 8
+
+          expect(Followup.count).to eq 0
+          expect(Task.count).to eq 0
+          expect(followup.save).to eq true
+          expect(Followup.count).to eq 1
+          expect(Task.count).to eq 0
+        end
       end
     end
   end
