@@ -100,7 +100,7 @@ class LineEntriesController < ApplicationController
 
   def create_url_by_line
     line = @line_entry.line
-    "www.it_follows.com/#{line.slug_name}/#{@line_entry.id}/edit"
+    "54.213.111.154/#{line.slug_name}/#{@line_entry.id}/edit"
   end
 
   def find_mail_by_mentions(mentions)
