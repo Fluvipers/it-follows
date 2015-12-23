@@ -1,5 +1,5 @@
 class TaskMailer < MandrillMailer::MessageMailer
-  default from: 'mariavelandia@fluvip.com'
+  default from: 'no-reply@fluvip.com'
 
   def task_email(email, url)
     mandrill_mail(
