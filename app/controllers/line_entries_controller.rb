@@ -47,10 +47,15 @@ class LineEntriesController < ApplicationController
   end
 
   def edit
-    @user=current_user
-    @line_entry = current_user.line_entries.find(params[:id])
+    @user = current_user
+    @line_entry = LineEntry.find(params[:id])
+
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
+
+    if not allowed_to_edit_line_entry?
+      render(:file => File.join(Rails.root, 'public/403.html'), :status => :forbidden, :layout => false) and return
+    end
 
     @url = "/#{params[:line_entries]}/#{params[:id]}"
     @method = 'patch'
@@ -88,6 +93,10 @@ class LineEntriesController < ApplicationController
     
   private
 
+  def allowed_to_edit_line_entry?
+    @line_entry.user_id == @user.id || @mentions.include?(@user.screen_name)
+  end
+
   def find_all_mentions(followup)
     mentions = show_mentions(followup.description)
     mentions.concat(followup.tasks.map{ |task| show_mentions(task.description)})
@@ -99,6 +108,7 @@ class LineEntriesController < ApplicationController
   end
 
   def create_url_by_line
+    # TODO: remove hardoded ip
     line = @line_entry.line
     "54.213.111.154/#{line.slug_name}/#{@line_entry.id}/edit"
   end
