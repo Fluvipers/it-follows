@@ -2,5 +2,14 @@
   %p
     = f.label :name , "name"
     %br
-      = f.text_field :name
+    = f.text_field :name
+    %br
+    %h4 Properties
+    - @line.properties.each do |prop|
+      = f.fields_for :properties, prop do |ff|
+        = ff.label prop[:name], "Name"
+        = ff.text_field prop[:name]
+        = ff.label prop[:required], "Required"
+        = ff.check_box prop[:required]
+        %br
   = f.submit "Submit"

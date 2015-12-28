@@ -13,6 +13,7 @@ feature "Define a new Line", type: :feature do
 
     visit new_line_path
     fill_in "name", with: 'Proposal'
+    fill_in "Hello", with: 'Proposal'
     click_on 'Submit'
 
     expect(current_path).to eq lines_path
