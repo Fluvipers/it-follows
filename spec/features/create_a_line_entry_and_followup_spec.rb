@@ -119,7 +119,7 @@ feature "Create a new line entry and enter followups for that entry" do
         within("#followups") do
           fill_in 'Activity details', with: '@dave and I visited the client, they need #sports and #fashion'
           fill_in 'Completion percentage', with: '10'
-          find("#line_entry_followups_attributes_0_tasks").set('call the client')
+          find("#line_entry_followups_attributes_0_tasks").set("call the client")
           attach_file('Attachments', "#{Rails.root}/image.jpg")
         end
 
@@ -159,6 +159,25 @@ feature "Create a new line entry and enter followups for that entry" do
           expect(page).to have_content(followup.description)
           expect(page).to have_content("#{followup.percentage}%")
         end
+
+        within("#followups") do
+          fill_in 'Activity details', with: '@dave and I visited the client, they need #sports and #fashion'
+          fill_in 'Completion percentage', with: '10'
+          find("#line_entry_followups_attributes_0_tasks").set("\nTarea 1\n\n\n \nTarea 2")
+          attach_file('Attachments', "#{Rails.root}/image.jpg")
+        end
+
+        click_on 'Submit'
+
+        line_entry.reload
+
+        expect(line_entry.followups.count).to eq 2
+        followup = line_entry.followups.last
+        expect(followup.tasks.count).to eq 2
+        task = followup.tasks.first
+        expect(task.description).to eq "Tarea 1"
+        task = followup.tasks.last
+        expect(task.description).to eq "Tarea 2"
 
         within(".nav") do
           click_on 'Support tickets'
