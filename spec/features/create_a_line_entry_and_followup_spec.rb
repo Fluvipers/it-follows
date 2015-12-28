@@ -195,7 +195,7 @@ feature "Create a new line entry and enter followups for that entry" do
       scenario "I should not be able to create new line entries" do
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
-        line = user.lines.create!(name: 'Proposals')
+        line = user.lines.create!(name: 'Proposals', properties: [{name: 'Nueva Linea', required: true}])
         visit root_path
         click_on "Proposals"
         expect(current_path).to eq new_user_session_path
@@ -206,7 +206,7 @@ feature "Create a new line entry and enter followups for that entry" do
       scenario "I should not be able to create new line entries" do
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com',
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
-        line = user.lines.create!(name: 'Proposals')
+        line = user.lines.create!(name: 'Proposals', properties: [{name: 'Nueva Linea', required: true}])
         visit root_path
         click_on "Proposals"
         expect(current_path).to eq new_user_session_path
