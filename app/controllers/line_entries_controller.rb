@@ -70,7 +70,7 @@ class LineEntriesController < ApplicationController
     attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
 
     tasks.each do |t|
-      followup.tasks.build(description: t, user: current_user)
+      followup.tasks.build(description: t, user: current_user) unless t.blank?
     end
 
     attachments.each {|x| followup.attached_documents.build(document: x)} unless attachments.nil?
