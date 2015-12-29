@@ -6,9 +6,10 @@ feature "Create a new line entry and enter followups for that entry" do
     context "As a logged user" do
       scenario "I want create a new Proposal but I don't set some field" do
 
-        line = user.lines.create!(name: 'Support Tickets',
-          properties: [{name: 'Title', required: true}, {name: 'Advertiser', required: true}, 
-          {name: 'Client', required: true} ])
+        line = user.lines.create!(name: 'Support Tickets')
+        property = line.properties.create!(name: 'Title', required: true)
+        property2 = line.properties.create!(name: 'Advertiser', required: true)
+        property3 = line.properties.create!(name: 'Client', required: true)
 
         visit new_user_session_path
 
@@ -49,9 +50,10 @@ feature "Create a new line entry and enter followups for that entry" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../spec/fixtures', __FILE__)
 
-        line = user.lines.create!(name: 'Support Tickets',
-          properties: [{name: 'Title', required: true}, {name: 'Advertiser', required: true}, 
-          {name: 'Client', required: true} ])
+        line = user.lines.create!(name: 'Support Tickets')
+        property = line.properties.create!(name: 'Title', required: true)
+        property2 = line.properties.create!(name: 'Advertiser', required: true)
+        property3 = line.properties.create!(name: 'Client', required: true)
 
         visit new_user_session_path
 

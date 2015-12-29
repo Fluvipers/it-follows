@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Line do
   it { should belong_to(:user) }
   it { should have_many(:line_entries) }
+  it { should have_many(:properties) }
 
   let(:user) { FactoryGirl.create(:user) }
 
@@ -29,12 +30,12 @@ describe Line do
 
       line_new.user_id = line_number_one.user.id
       line_new.name = "a nEw Line"
-      line_new.properties = [{"name"=>"Title", "required"=>true}, {"name"=>"Advertiser", "required"=>true}]
 
       expect(line_new.save).to eq false
       line_new.should_not be_valid
       expect(Line.count).to eq 1
     end
+
     it "and this has the same name" do
       line_number_one = FactoryGirl.create(:line)
       line_new = Line.new
@@ -43,7 +44,6 @@ describe Line do
 
       line_new.user_id = line_number_one.user.id
       line_new.name = "a new line"
-      line_new.properties = [{"name"=>"Title", "required"=>true}, {"name"=>"Advertiser", "required"=>true}]
 
       expect(line_new.save).to eq false
       line_new.should_not be_valid
