@@ -134,7 +134,7 @@ class LineEntriesController < ApplicationController
   end
 
   def line_properties
-    find_line.properties.map { |property| property["name"].downcase.to_sym }
+    find_line.properties.map { |property| property.name.downcase.to_sym }
   end
 
   def build_properties_inputs(values={})

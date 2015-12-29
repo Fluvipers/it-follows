@@ -6,8 +6,7 @@ RSpec.describe AttachedDocument, type: :model do
   describe "validate creation of new attached_documents" do
     let(:user) { FactoryGirl.create(:user) }
 
-    let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
-               {name: 'Influencer', required: false}]) }
+    let(:cashout) { user.lines.create!(name: 'Cashouts') }
 
     let(:entry) { cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon"}) }
 

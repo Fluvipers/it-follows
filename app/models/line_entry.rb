@@ -18,7 +18,7 @@ class LineEntry < ActiveRecord::Base
   end
 
   def validation_parameters
-    required_properties = self.line.properties.map {|property| property["name"] if property["required"]}.compact
+    required_properties = self.line.properties.map {|property| property.name if property.required}.compact
                           .map{ |property| property.downcase }
     has_not_data? ? add_errors(required_properties) : add_errors(data_required(required_properties))
   end

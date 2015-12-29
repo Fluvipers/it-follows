@@ -7,14 +7,17 @@ RSpec.describe LineEntry, type: :model do
   describe "validate creation of a new line_entry" do
     let(:user) { FactoryGirl.create(:user) }
 
-    let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
-               {name: 'Influencer', required: false}]) }
+    let(:cashout) { user.lines.create!(name: 'Cashouts') }
+
+    let(:property1) {cashout.properties.create!(name: 'Campaign', required: true)}
+    let(:property2) {cashout.properties.create!(name: 'Influencer', required: false)}
 
     context "when the line has no required properties" do
       context "and #data is nil" do
         it "should not create line entry" do
-          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
-          cashout.save!
+          property1.required = false
+          property1.save!
+
           expect(LineEntry.count).to eq 0
           entry = cashout.line_entries.create(user: user, data: nil)
           expect(entry.save).to eq false
@@ -23,8 +26,9 @@ RSpec.describe LineEntry, type: :model do
       end
       context "and #data is {}" do
         it "should not create line entry" do
-          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
-          cashout.save!
+          property1.required = false
+          property1.save!
+
           expect(LineEntry.count).to eq 0
           entry = cashout.line_entries.create(user: user, data: {})
           expect(entry.save).to eq false
@@ -52,8 +56,8 @@ RSpec.describe LineEntry, type: :model do
       end
       context "and data has values but misses some required properties" do
         it "should not create line entry" do
-          cashout.properties = [{name: 'number_post', required: true}, {name: 'campaign', required: true}, 
-                                {name: 'influencer', required: false}]
+          property3 = cashout.properties.create!(name: 'Number_Post', required: true)
+
           cashout.save!
           entry = cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon"})
           expect(entry.save).to eq false
@@ -75,14 +79,17 @@ RSpec.describe LineEntry, type: :model do
     let(:user) { User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678', 
                password_confirmation: '12345678', confirmed_at: Time.now) }
 
-    let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
-               {name: 'Influencer', required: false}]) }
+    let(:cashout) { user.lines.create!(name: 'Cashouts') }
+
+    let(:property1) {cashout.properties.create!(name: 'Campaign', required: true)}
+    let(:property2) {cashout.properties.create!(name: 'Influencer', required: false)}
 
     context "when the line has no required properties" do
       context "and #data is nil" do
         it "should not add error messages" do
-          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
-          cashout.save!
+          property1.required = false
+          property1.save!
+
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
           entry.errors.should_not have_key :campaign
@@ -91,8 +98,9 @@ RSpec.describe LineEntry, type: :model do
       end
       context "and #data is {}" do
         it "should not add error messages" do
-          cashout.properties = [{name: 'campaign', required: false}, {name: 'influencer', required: false}]
-          cashout.save!
+          property1.required = false
+          property1.save!
+
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
           entry.errors.should_not have_key :campaign
@@ -104,6 +112,8 @@ RSpec.describe LineEntry, type: :model do
     context "when the line has required properties" do
       context "and #data is nil" do
         it "adds an error message for the missing required fields" do
+          property1 = cashout.properties.create!(name: 'Campaign', required: true)
+          property2 = cashout.properties.create!(name: 'Influencer', required: false)
           entry = cashout.line_entries.new(user: user, data: nil)
           entry.valid?
           entry.errors.should have_key :campaign
@@ -112,6 +122,8 @@ RSpec.describe LineEntry, type: :model do
       end
       context "and #data is {}" do
         it "adds an error message for the missing required fields" do
+          property1 = cashout.properties.create!(name: 'Campaign', required: true)
+          property2 = cashout.properties.create!(name: 'Influencer', required: false)
           entry = cashout.line_entries.new(user: user, data: {})
           entry.valid?
           entry.errors.should have_key :campaign
@@ -120,9 +132,8 @@ RSpec.describe LineEntry, type: :model do
       end
       context "and data has values but misses some required properties" do
         it "adds an error message for the missing required fields" do
-          cashout.properties = [{name: 'number_post', required: true}, {name: 'campaign', required: true}, 
-                                {name: 'influencer', required: false}]
-          cashout.save!
+          property3 = cashout.properties.create!(name: 'Number_Post', required: true)
+
           entry = cashout.line_entries.new(user: user, data: {campaign: "Nickelodeon"})
           entry.valid?
           entry.errors.should_not have_key :campaign
@@ -173,8 +184,7 @@ RSpec.describe LineEntry, type: :model do
   describe "when the line entry is edited" do
     let(:user) { FactoryGirl.create(:user) }
 
-    let(:cashout) { user.lines.create!(name: 'Cashouts', properties: [{name: 'Campaign', required: true},
-               {name: 'Influencer', required: false}]) }
+    let(:cashout) { user.lines.create!(name: 'Cashouts') }
 
     let(:entry) { cashout.line_entries.create!(user: user, data: {campaign: "Nickelodeon"}) }
 
