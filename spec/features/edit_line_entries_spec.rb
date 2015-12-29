@@ -34,7 +34,7 @@ feature "Editing line entries" do
           line = user.lines.create!(name: 'Support Tickets',
             properties: [{name: 'Title', required: true}])
           line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
-          followup = line_entry.followups.create!(description: 'do something with @yoko_gmail', percentage: 0)
+          followup = line_entry.followups.create!(description: "do something with @#{yoko.screen_name}", percentage: 0)
 
           visit new_user_session_path
 
