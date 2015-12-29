@@ -10,22 +10,24 @@ describe User do
   describe "When a user is created should create user's screen_name" do
     context "when the username of his mail isn't in a user" do
       it "should create screen_name like email's username" do
-        expect(User.count).to eq 0
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678',
                   password_confirmation: '12345678', confirmed_at: Time.now) 
-        expect(User.count).to eq 1
+
+        expect(user.screen_name).to eq "wendy"
+        user.save!
         expect(user.screen_name).to eq "wendy"
       end
     end
+
     context "when the username of his mail is in a user" do
       it "should create screen_name like email's username_domain" do
-        expect(User.count).to eq 0
         User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678',
                   password_confirmation: '12345678', confirmed_at: Time.now) 
-        expect(User.count).to eq 1
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@fluvip.com', password: '12345678',
                   password_confirmation: '12345678', confirmed_at: Time.now) 
-        expect(User.count).to eq 2
+        expect(user.screen_name).to eq "wendy_fluvip"
+
+        user.save!
         expect(user.screen_name).to eq "wendy_fluvip"
       end
     end
