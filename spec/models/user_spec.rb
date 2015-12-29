@@ -9,7 +9,7 @@ describe User do
 
   describe "When a user is created should create user's screen_name" do
     context "when the username of his mail isn't in a user" do
-      it "should create screen_name like email's username" do
+      it "should create screen_name like email's username and it should not change after updating the record" do
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678',
                   password_confirmation: '12345678', confirmed_at: Time.now) 
 
@@ -20,7 +20,7 @@ describe User do
     end
 
     context "when the username of his mail is in a user" do
-      it "should create screen_name like email's username_domain" do
+      it "should create screen_name like email's username_domain and it should not change after updating the record" do
         User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@gmail.com', password: '12345678',
                   password_confirmation: '12345678', confirmed_at: Time.now) 
         user = User.create!(first_name: 'wendy', last_name: 'darling', email: 'wendy@fluvip.com', password: '12345678',
