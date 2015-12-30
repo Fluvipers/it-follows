@@ -64,7 +64,7 @@ class LineEntriesController < ApplicationController
   end
 
   def update
-    @line_entry = current_user.line_entries.find(params[:id])
+    @line_entry = LineEntry.find(params[:id])
     x = line_entry_params.merge(line: find_line)
     tasks = x["followups_attributes"]["0"].delete("tasks")
     tasks = tasks.split("\r\n")

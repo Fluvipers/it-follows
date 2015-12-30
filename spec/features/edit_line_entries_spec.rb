@@ -26,6 +26,13 @@ feature "Editing line entries" do
           expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
           expect(page).to have_selector("input[value='" + title + "']")
           expect(page).to have_selector("input[type=submit]")
+
+          fill_in "line_entry_followups_attributes_0_description", with: 'Followup Creado por otro'
+          fill_in "line_entry_followups_attributes_0_percentage", with: 2
+          click_button "Submit"
+
+          expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
+          expect(page).to have_content('Followup Creado por otro')
         end
       end
 
@@ -48,6 +55,13 @@ feature "Editing line entries" do
 
           expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
           expect(page).to have_content(followup.description)
+
+          fill_in "line_entry_followups_attributes_0_description", with: 'Followup Creado por otro'
+          fill_in "line_entry_followups_attributes_0_percentage", with: 2
+          click_button "Submit"
+
+          expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
+          expect(page).to have_content('Followup Creado por otro')
         end
       end
     end
