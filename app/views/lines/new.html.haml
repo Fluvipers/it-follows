@@ -1,6 +1,8 @@
-= form_for :line, url: lines_path do |f|
-  %p
-    = f.label :name , "name"
+= simple_form_for @line, url: lines_path do |f|
+  = f.input :name , label: "name"
+  = f.fields_for :properties, @line.properties do |ff|
+    = ff.input :name, required: false
+    = ff.check_box :required, label: "Required"
+    %label Required
     %br
-      = f.text_field :name
   = f.submit "Submit"
