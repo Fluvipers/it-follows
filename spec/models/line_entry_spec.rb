@@ -91,7 +91,7 @@ RSpec.describe LineEntry, type: :model do
           property1.save!
 
           entry = cashout.line_entries.new(user: user, data: nil)
-          entry.valid?
+          expect(entry.valid?).to eq false
           entry.errors.should_not have_key :campaign
           entry.errors.should_not have_key :influencer
         end
@@ -102,7 +102,7 @@ RSpec.describe LineEntry, type: :model do
           property1.save!
 
           entry = cashout.line_entries.new(user: user, data: nil)
-          entry.valid?
+          expect(entry.valid?).to eq false
           entry.errors.should_not have_key :campaign
           entry.errors.should_not have_key :influencer
         end
