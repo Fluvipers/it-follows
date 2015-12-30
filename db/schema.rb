@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151223181021) do
+ActiveRecord::Schema.define(version: 20151229174725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,11 +21,6 @@ ActiveRecord::Schema.define(version: 20151223181021) do
     t.integer  "followup_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-  end
-
-  create_table "attachments", force: :cascade do |t|
-    t.string  "file"
-    t.integer "followup_id"
   end
 
   create_table "followups", force: :cascade do |t|
@@ -54,11 +49,21 @@ ActiveRecord::Schema.define(version: 20151223181021) do
   create_table "lines", force: :cascade do |t|
     t.string  "name"
     t.integer "user_id"
-    t.jsonb   "properties"
     t.string  "slug_name"
   end
 
   add_index "lines", ["user_id"], name: "index_lines_on_user_id", using: :btree
+
+  create_table "properties", force: :cascade do |t|
+    t.string   "name"
+    t.string   "data_type",  default: "String"
+    t.boolean  "required",   default: false
+    t.integer  "line_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "properties", ["line_id"], name: "index_properties_on_line_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
     t.integer  "followup_id"
@@ -109,6 +114,7 @@ ActiveRecord::Schema.define(version: 20151223181021) do
   add_foreign_key "line_entries", "lines"
   add_foreign_key "line_entries", "users"
   add_foreign_key "lines", "users"
+  add_foreign_key "properties", "lines"
   add_foreign_key "tasks", "followups"
   add_foreign_key "tasks", "users"
 end
