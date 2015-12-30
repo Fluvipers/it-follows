@@ -9,7 +9,7 @@ feature "Editing line entries" do
       context "and if user is owner of the line" do
         scenario "user can edit the line" do
           line = user.lines.create!(name: 'Support Tickets',
-            properties: [{name: 'Title', required: false}])
+            properties: [Property.new(name: 'Title')])
           title = 'new test line'
           line_entry = user.line_entries.create!(line: line, data: {title: title})
   
@@ -32,7 +32,7 @@ feature "Editing line entries" do
       context "and if user is tagged on the line" do
         scenario "user can edit the line" do
           line = user.lines.create!(name: 'Support Tickets',
-            properties: [{name: 'Title', required: true}])
+            properties: [Property.new(name: 'Title')])
           line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
           followup = line_entry.followups.create!(description: "do something with @#{yoko.screen_name}", percentage: 0)
 
@@ -54,7 +54,7 @@ feature "Editing line entries" do
     context "and user isn't tagged on the line" do
       scenario "user can't edit the line" do
         line = user.lines.create!(name: 'Support Tickets',
-          properties: [{name: 'Title', required: true}])
+          properties: [Property.new(name: 'Title')])
         line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
 
         visit new_user_session_path
