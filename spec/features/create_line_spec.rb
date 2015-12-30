@@ -13,9 +13,18 @@ feature "Define a new Line", type: :feature do
 
     visit new_line_path
     fill_in "name", with: 'Proposal'
+    fill_in "line_properties_attributes_0_name", with: 'New Property'
     click_on 'Submit'
 
     expect(current_path).to eq lines_path
     expect(page).to have_content("Proposal")
+
+    click_link 'Proposal'
+
+    expect(current_path).to eq '/proposal'
+
+    click_link 'New'
+
+    expect(page).to have_content("New Property")
   end
 end
