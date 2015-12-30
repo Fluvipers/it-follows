@@ -11,7 +11,6 @@ class LinesController < ApplicationController
   def create
     params = remove_empty_properties(line_params)
     @line = Line.new(params)
-    puts @line.properties.inspect
     if @line.save!
       flash[:notice] = "Linea creada exitosamente"
       redirect_to lines_path
