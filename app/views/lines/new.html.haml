@@ -2,7 +2,7 @@
   = f.input :name , label: "name"
   = f.fields_for :properties, @line.properties do |ff|
     = ff.input :name, required: false
-    = ff.check_box :required, label: "Required"
+    = ff.check_box :required
     %label Required
     %br
   = f.submit "Submit"
