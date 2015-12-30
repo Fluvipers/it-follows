@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 20151229174725) do
 
   create_table "properties", force: :cascade do |t|
     t.string   "name"
-    t.string   "data_type"
+    t.string   "data_type",  default: "String"
     t.boolean  "required",   default: false
     t.integer  "line_id"
     t.datetime "created_at", null: false
