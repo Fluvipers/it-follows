@@ -20,15 +20,15 @@ class User < ActiveRecord::Base
   private
 
   def set_screen_name
-    self.screen_name = what_screen_name
+    self.screen_name ||= what_screen_name
   end
 
   def what_screen_name
-    exist_screen_name? ? user_username : set_slug_screen_name  
+    exist_screen_name? ? set_slug_screen_name : user_username
   end
 
   def exist_screen_name?
-    User.where(screen_name: user_username).count.zero?
+    User.where(screen_name: user_username).any?
   end
 
   def user_username
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
     self.email.split("@").last.split(".").first
   end
 
-  def set_slug_screen_name  
-    user_username + "_" + user_domain
+  def set_slug_screen_name
+    "#{user_username}_#{user_domain}"
   end
 end
