@@ -23,11 +23,6 @@ ActiveRecord::Schema.define(version: 20151229174725) do
     t.datetime "updated_at",  null: false
   end
 
-  create_table "attachments", force: :cascade do |t|
-    t.string  "file"
-    t.integer "followup_id"
-  end
-
   create_table "followups", force: :cascade do |t|
     t.integer  "line_entry_id"
     t.integer  "user_id"
