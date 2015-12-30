@@ -68,6 +68,8 @@ ActiveRecord::Schema.define(version: 20151229174725) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "properties", ["line_id"], name: "index_properties_on_line_id", using: :btree
+
   create_table "tasks", force: :cascade do |t|
     t.integer  "followup_id"
     t.integer  "user_id"
@@ -117,6 +119,7 @@ ActiveRecord::Schema.define(version: 20151229174725) do
   add_foreign_key "line_entries", "lines"
   add_foreign_key "line_entries", "users"
   add_foreign_key "lines", "users"
+  add_foreign_key "properties", "lines"
   add_foreign_key "tasks", "followups"
   add_foreign_key "tasks", "users"
 end

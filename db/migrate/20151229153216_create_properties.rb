@@ -4,7 +4,7 @@ class CreateProperties < ActiveRecord::Migration
       t.string :name
       t.string :data_type
       t.boolean :required, default: false
-      t.integer :line_id
+      t.references :line, index: true, foreign_key: true
 
       t.timestamps null: false
     end

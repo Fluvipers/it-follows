@@ -7,6 +7,8 @@ class Line < ActiveRecord::Base
   validates :name, uniqueness: { case_sensitive: false, message: "There is already a line with that name"}
   before_save :set_slug_name
 
+  accepts_nested_attributes_for :properties
+
   private
   def set_slug_name
     self.slug_name = self.name.parameterize(sep="_")
