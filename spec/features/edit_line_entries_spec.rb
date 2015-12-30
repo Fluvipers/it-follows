@@ -68,7 +68,7 @@ feature "Editing line entries" do
         visit "/support_tickets/#{line_entry.id}/edit"
 
         expect(page.status_code).to eq 403
-        expect(page).to have_content("The page you were looking for doesn't exist.")
+        expect(page).to have_content("You are not authorized to view this page (403)")
       end
     end
   end
