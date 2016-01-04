@@ -34,7 +34,7 @@ class LineEntriesController < ApplicationController
   end
 
   def external_edit
-    @user=current_user
+    @user = current_user
     @line_entry = current_user.line_entries.find(params[:id])
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
@@ -51,6 +51,7 @@ class LineEntriesController < ApplicationController
     @line_entry = LineEntry.find(params[:id])
 
     @mentions = @line_entry.followups.map { |followup| show_mentions(followup.description) }.uniq.flatten
+    @mentions_tasks = @line_entry.tasks.map { |task| show_mentions(task.description) }.uniq.flatten
     @hashtags = @line_entry.followups.map { |followup| show_hashtags(followup.description) }.uniq.flatten
 
     if not allowed_to_edit_line_entry?
@@ -94,7 +95,7 @@ class LineEntriesController < ApplicationController
   private
 
   def allowed_to_edit_line_entry?
-    @line_entry.user_id == @user.id || @mentions.include?(@user.screen_name)
+    @line_entry.user_id == @user.id || @mentions.include?(@user.screen_name) || @mentions_tasks.include?(@user.screen_name)
   end
 
   def find_all_mentions(followup)

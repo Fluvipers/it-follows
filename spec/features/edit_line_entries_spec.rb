@@ -36,6 +36,36 @@ feature "Editing line entries" do
         end
       end
 
+      context "and if user is tagged on task" do
+        scenario "user can edit the line" do
+          line = user.lines.create!(name: 'Support Tickets',
+            properties: [Property.new(name: 'Title')])
+          line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
+          followup = line_entry.followups.create!(description: "do something", percentage: 0)
+          task = line_entry.followups.last.tasks.create!(user_id: user.id, description: "do something with @#{yoko.screen_name}")
+
+          visit new_user_session_path
+
+          within("#new_user") do
+            fill_in "Email", with: yoko.email
+            fill_in "Password", with: yoko.password
+            click_button "Log in"
+          end
+
+          visit "/support_tickets/#{line_entry.id}/edit"
+
+          expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
+          expect(page).to have_content(followup.description)
+
+          fill_in "line_entry_followups_attributes_0_description", with: 'Followup Creado por otro'
+          fill_in "line_entry_followups_attributes_0_percentage", with: 2
+          click_button "Submit"
+
+          expect(current_path).to eq "/support_tickets/#{line_entry.id}/edit"
+          expect(page).to have_content('Followup Creado por otro')
+        end
+      end
+
       context "and if user is tagged on the line" do
         scenario "user can edit the line" do
           line = user.lines.create!(name: 'Support Tickets',
