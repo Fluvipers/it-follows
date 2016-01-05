@@ -11,14 +11,6 @@
 <body>
   <% if user_signed_in? %>
     <nav class="navbar">
-      <ul class="nav nav-tabs">
-        <% @lines.each do |line| %>
-          <li role="presentation">
-            <%= link_to line.name.humanize, line_entries_path(line_entries: line.slug_name) %>
-          </li>
-        <% end %>
-      </ul>
-
       <div class="navbar-right">
         <div class="media">
           <div class="media-left">
