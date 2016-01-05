@@ -30,7 +30,8 @@
           .media-left
             %a{href: "#"}
               %img.img-circle.media-object{src: followup.user.image_url, alt: ""}
-            = followup.user.full_name
+            %b
+              = followup.user.full_name
             = "@#{followup.user.screen_name}"
             = followup.user.email
           .media-body
