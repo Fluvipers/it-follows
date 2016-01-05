@@ -19,9 +19,7 @@ feature "Create a new line entry and enter followups for that entry" do
           click_button "Log in"
         end
 
-        within(".nav") do
-          click_on 'Support tickets'
-        end
+        visit '/support_tickets'
 
         expect(current_path).to eq '/support_tickets'
         expect(Line.last.line_entries.count).to   eq(0)
@@ -63,9 +61,7 @@ feature "Create a new line entry and enter followups for that entry" do
           click_button "Log in"
         end
 
-        within(".nav") do
-          click_on 'Support tickets'
-        end
+        visit '/support_tickets'
 
         expect(current_path).to eq '/support_tickets'
 
@@ -82,9 +78,7 @@ feature "Create a new line entry and enter followups for that entry" do
           click_on 'Submit'
         end
 
-        within(".nav") do
-          click_on 'Support tickets'
-        end
+        visit '/support_tickets'
 
         expect(current_path).to eq '/support_tickets'
 
@@ -182,9 +176,7 @@ feature "Create a new line entry and enter followups for that entry" do
         task = followup.tasks.last
         expect(task.description).to eq "Tarea 2"
 
-        within(".nav") do
-          click_on 'Support tickets'
-        end
+        visit '/support_tickets'
 
         expect(current_path).to eq '/support_tickets'
 

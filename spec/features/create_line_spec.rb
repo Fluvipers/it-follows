@@ -25,7 +25,7 @@ feature "Define a new Line", type: :feature do
     expect(Property.first.name).to eq "New Property"
     expect(Property.first.required).to eq true
 
-    click_link 'Proposal'
+    visit '/proposal'
 
     expect(current_path).to eq '/proposal'
 
