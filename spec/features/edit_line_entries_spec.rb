@@ -41,7 +41,7 @@ feature "Editing line entries" do
           line = user.lines.create!(name: 'Support Tickets',
             properties: [Property.new(name: 'Title')])
           line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
-          followup = line_entry.followups.create!(description: "do something", percentage: 0)
+          followup = line_entry.followups.create!(description: "do something", percentage: 0, user: user)
           task = line_entry.followups.last.tasks.create!(user_id: user.id, description: "do something with @#{yoko.screen_name}")
 
           visit new_user_session_path
@@ -71,7 +71,7 @@ feature "Editing line entries" do
           line = user.lines.create!(name: 'Support Tickets',
             properties: [Property.new(name: 'Title')])
           line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
-          followup = line_entry.followups.create!(description: "do something with @#{yoko.screen_name}", percentage: 0)
+          followup = line_entry.followups.create!(description: "do something with @#{yoko.screen_name}", percentage: 0, user: user)
 
           visit new_user_session_path
 
