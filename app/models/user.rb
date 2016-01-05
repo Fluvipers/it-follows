@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
   mount_uploader :image, ImageUploader
   before_save :set_screen_name
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
 
   def set_screen_name

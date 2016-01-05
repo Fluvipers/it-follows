@@ -135,6 +135,7 @@ feature "Create a new line entry and enter followups for that entry" do
 
         expect(line_entry.followups.count).to eq 1
         followup = line_entry.followups.first
+        expect(followup.user).to eq user
         expect(followup.tasks.count).to eq 1
         task = followup.tasks.first
         expect(task.description).to eq "call the client"
@@ -199,7 +200,6 @@ feature "Create a new line entry and enter followups for that entry" do
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
         line = user.lines.create!(name: 'Proposals')
         visit root_path
-        click_on "Proposals"
         expect(current_path).to eq new_user_session_path
       end
     end
@@ -210,7 +210,6 @@ feature "Create a new line entry and enter followups for that entry" do
           password: '12345678', password_confirmation: '12345678', confirmed_at: Time.now)
         line = user.lines.create!(name: 'Proposals')
         visit root_path
-        click_on "Proposals"
         expect(current_path).to eq new_user_session_path
       end
     end
