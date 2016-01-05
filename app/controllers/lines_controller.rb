@@ -11,11 +11,15 @@ class LinesController < ApplicationController
   def create
     params = remove_empty_properties(line_params)
     @line = Line.new(params)
-    if @line.save!
-      flash[:notice] = "Linea creada exitosamente"
-      redirect_to lines_path
-    else
-      render :edit
+
+    respond_to do |format|
+      if @line.save!
+        format.html { redirect_to lines_path, notice: 'Line was successfully created.' }
+        format.json { render :show, location: @line}
+      else
+        format.html { render :edit}
+        format.json { render json: @line.errors, status: :unprocessable_entity }
+      end
     end
   end
 
