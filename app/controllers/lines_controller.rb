@@ -14,7 +14,7 @@ class LinesController < ApplicationController
 
     respond_to do |format|
       if @line.save!
-        format.html { redirect_to tasks_path, notice: 'Line was successfully created.' }
+        format.html { redirect_to lines_path, notice: 'Line was successfully created.' }
         format.json { render :show, location: @line}
       else
         format.html { render :edit}
