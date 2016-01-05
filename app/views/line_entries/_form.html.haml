@@ -39,7 +39,8 @@
 
       - if @line_entry.needs_followup?
         .well
-          = f.simple_fields_for :followups, @line_entry.followups.build do |ff|
+          = f.simple_fields_for :followups, @line_entry.followups.build(user: current_user) do |ff|
+            = ff.input_field :user_id, as: :hidden
             .form-group
               = ff.label :description, "Activity details"
               = ff.input_field :description, class: 'form-control'
