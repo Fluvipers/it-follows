@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  devise_for :users, controllers: { sessions: "users/sessions" , registrations: 'users/registrations'}
+  devise_for :users, controllers: { sessions: "users/sessions"}
   resources :lines
 
   get '/:line_entries/', to: 'line_entries#index', as: 'line_entries', constraints: { line_entries: /\w+/}
