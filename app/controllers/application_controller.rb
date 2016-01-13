@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   acts_as_token_authentication_handler_for User 
   before_action :authenticate_user!
   before_action :set_lines
+  respond_to :html, :json
 
   private
 

@@ -17,6 +17,7 @@ gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 gem "simple_token_authentication", "~> 1.0"
 gem 'mandrill_mailer'
 gem 'jbuilder', '~> 2.0'
+gem 'thor'
 
 group :development, :test do
   gem 'rspec-rails'

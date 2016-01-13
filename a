@@ -1,0 +1,18 @@
+itfollows login
+
+itfollows list lines
+itfollows list support_tickets
+
+itfollows new support_tickets --nombre "LineEntry " --sistema_opertivo "linux" --description "pues no se que poner @maria y por defecto @juan_ramirez para que pueda visualizarlas todas" --attach /tmp/algo.jpg
+itfollows new followup --entry 123 --description "sigue sin arreglar @maria" --percentage 0
+itfollows new task --entry 123 --description "sigue sin arreglar @maria" --followup_id 1 
+
+itfollows show support_tickets --entry 123
+
+comando cosa -> [lines | support_tickets(line_entry) | followup | task] params
+
+comandos:
+  login
+  list
+  new
+  show
