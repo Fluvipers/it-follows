@@ -9,7 +9,7 @@
   %tbody
     - @line_entries.each do |entry|
       %tr
-        %td= entry.data["title"]
+        %td= entry.data["name"]
         %td= entry.user.first_name
         %td
           .progress
