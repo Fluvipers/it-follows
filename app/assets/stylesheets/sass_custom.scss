@@ -1,0 +1,111 @@
+/* Color */
+
+$color1: #00C0FF;
+$color2: #FF9625;
+$color3: #00D688;
+$color4: #999999;
+
+/* hover oscuro */
+$hover1: #00AEE7;
+$hover2: #FF8501;
+$hover3: #00B573;
+$hover4: #666666;
+
+/* variante mas claro */
+
+$light1: #5CD6FF;
+$light2: #FFAD54;
+$light3: #27EBA2;
+$light4: #C9CACF;
+
+/* otros */
+
+$background: #2e3848;
+$text: #666666;
+$nav: #354052;
+$gray: #edeff5;
+$light-background: #F1F2F7;
+$error: #fe7273;
+$include: #bdfff6;
+$expired: #DFC341;
+$pending-back: #FEF9D0;
+
+/*tooltip*/
+
+$t-red: #EFC5C6;
+$t-green: #88FEDD;
+$t-blue: #B1F0FF;
+
+/*dashboard*/
+$twitter: #4191cf;
+$facebook: #335791;
+$instagram: #895a43;
+$youtube: #c13d3d;
+
+$tw-back: #6caddf;
+$fb-back: #4d70a8;
+$insta-back: #937263;
+$yt-back: #d35a5a;
+$mas-back: #e2e4eb;
+
+/* para los PDF */
+
+$lighter1: #B2ECFF;
+$lighter3: #B0F6DC;
+$lighter4: #E1E4EB;
+
+/*states*/
+
+$ok: #00B474;
+$lightok: #8BEED3;
+$regular: #FF8C17;
+$lightregular: #FDDEA8;
+$bad: #D25B5D;
+$lightbad: #FFD8D7;
+
+/* square-icon colors 
+
+$square-1: #00a9e0;
+$square-2: #00b573;*/
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
+
+@font-face {
+  font-family: 'latobold';
+  src: font-url("fonts/lato-bold-webfont.eot");
+  src: font-url("fonts/lato-bold-webfont.eot?#iefix") format("embedded-opentype"), font-url("fonts/lato-bold-webfont.woff2") format("woff2"), font-url("fonts/lato-bold-webfont.woff") format("woff"), font-url("fonts/lato-bold-webfont.ttf") format("truetype"), font-url("fonts/lato-bold-webfont.svg#latobold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'latolight';
+  src: font-url("fonts/lato-light-webfont.eot");
+  src: font-url("fonts/lato-light-webfont.eot?#iefix") format("embedded-opentype"), font-url("fonts/lato-light-webfont.woff2") format("woff2"), font-url("fonts/lato-light-webfont.woff") format("woff"), font-url("fonts/lato-light-webfont.ttf") format("truetype"), font-url("fonts/lato-light-webfont.svg#latolight") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'latoregular';
+  src: font-url("fonts/lato-regular-webfont.eot");
+  src: font-url("fonts/lato-regular-webfont.eot?#iefix") format("embedded-opentype"), font-url("fonts/lato-regular-webfont.woff2") format("woff2"), font-url("fonts/lato-regular-webfont.woff") format("woff"), font-url("fonts/lato-regular-webfont.ttf") format("truetype"), font-url("fonts/lato-regular-webfont.svg#latoregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media only screen and (min-width:1px) {
+  body {
+    background: $light-background;
+  }
+}
+h1,h2,h3,h4,h5,h6,label{ 
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+}
+label { 
+  font-weight: 300;
+}

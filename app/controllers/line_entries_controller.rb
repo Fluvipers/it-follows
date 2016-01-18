@@ -6,8 +6,22 @@ class LineEntriesController < ApplicationController
   before_action :authenticate_user!, expect: [:create]
 
   def index
+    @user = current_user
     @line_entries = find_line.line_entries
     @line_entry_path = params[:line_entries]
+
+    if params[:user].present?
+      case params[:user].present?
+        when params[:user][:first_name].present?
+          @line_entries = LineEntry.select{|a| a.user.first_name== params[:user][:first_name] && a.line.slug_name == params[:line_entries]}
+        when params[:user][:last_name].present?
+          @line_entries = LineEntry.select{|a| a.user.last_name== params[:user][:last_name] && a.line.slug_name == params[:line_entries]}
+        when params[:user][:country].present?
+          @line_entries = LineEntry.select{|a| a.user.country == params[:user][:country] && a.line.slug_name == params[:line_entries]}
+        else
+          @line_entries = find_line.line_entries
+      end
+    end
   end
 
   def new

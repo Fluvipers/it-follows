@@ -18,6 +18,7 @@ gem "simple_token_authentication", "~> 1.0"
 gem 'mandrill_mailer'
 gem 'jbuilder', '~> 2.0'
 gem 'thor'
+gem 'ransack'
 
 group :development, :test do
   gem 'rspec-rails'

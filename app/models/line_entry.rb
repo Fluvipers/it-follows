@@ -9,6 +9,10 @@ class LineEntry < ActiveRecord::Base
   validates_presence_of :data
   validate :validation_parameters
 
+  def ransackable_attributes(auth_object = nil)
+    super & %w(name price)
+  end
+
   def current_percentage
     followups.last.try(:percentage).to_i
   end

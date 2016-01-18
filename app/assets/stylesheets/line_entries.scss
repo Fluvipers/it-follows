@@ -1,0 +1,37 @@
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width:1px) {
+  .button-new {
+    color: $light-background;
+    font-weight: 700;
+  }
+  .progress {
+    background-color: #FFFFFF;
+    .progress-bar {
+      color: #000000;
+      font-weight: 700;
+    }
+  }
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+    
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+
+}
+
+/*breakpoints*/
+

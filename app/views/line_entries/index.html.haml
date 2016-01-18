@@ -1,19 +1,28 @@
-= link_to 'New', new_line_entries_path(@line_entry_path)
+= form_for @user, :url => line_entries_path, :html => { :method => 'GET' } do |f|
+  = f.label :first_name
+  = f.text_field :first_name
+  = f.label :last_name
+  = f.text_field :last_name
+  = f.label :country
+  = f.text_field :country
+  = f.submit
+.col-xs-12.text-right
+  = link_to 'New', new_line_entries_path(@line_entry_path), class: "button-new btn btn-info"
 %table.table
   %thead
     %tr
-      %th Something
-      %th Name
+      %th Budget's Name
+      %th Commercial
       %th Progress
-      %th
+      %th 
   %tbody
     - @line_entries.each do |entry|
       %tr
-        %td= entry.data["title"]
+        %td= entry.data["name"]
         %td= entry.user.first_name
         %td
           .progress
-            .progress-bar{role: "progressbar", "aria-valuenow"=>entry.current_percentage,
+            .progress-bar.progress-bar-info.progress-bar-striped{role: "progressbar", "aria-valuenow"=>entry.current_percentage,
               "aria-valuemin"=>"0", "aria-valuemax" => "100", style: "width: #{entry.current_percentage}%;"}
               = "#{entry.current_percentage}% Complete"
-        %td= link_to "Edit", edit_line_entry_path(params[:line_entries], entry)
+        %td= link_to "Edit", edit_line_entry_path(params[:line_entries], entry), class: "glyphicon glyphicon-pencil"
