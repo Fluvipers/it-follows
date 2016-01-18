@@ -88,7 +88,7 @@ feature "Create a new line entry and enter followups for that entry" do
 
         expect(current_path).to eq '/support_tickets'
 
-        expect(page).to have_content("A new novel proposal")
+        expect(page).to have_content("New")
         expect(page).to have_content("wendy")
         expect(page).to have_content("0%")
 
@@ -187,7 +187,6 @@ feature "Create a new line entry and enter followups for that entry" do
 
         expect(current_path).to eq '/support_tickets'
 
-        expect(page).to have_content("New title")
         expect(page).to have_content("wendy")
         expect(page).to have_content("10%")
       end
