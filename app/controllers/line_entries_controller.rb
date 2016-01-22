@@ -3,7 +3,6 @@ require "hashtag_finder"
 require "line_entry_properties_to_html_inputs_mapper"
 
 class LineEntriesController < ApplicationController
-  before_action :authenticate_user!, expect: [:create]
 
   def index
     @user = current_user
@@ -82,10 +81,15 @@ class LineEntriesController < ApplicationController
 
     attachments.each {|x| followup.attached_documents.build(document: x)} unless attachments.nil?
 
-    if followup.save
-      redirect_to edit_line_entry_path(params[:line_entries], @line_entry)
-    else
-      render :edit
+    respond_to do |format|
+      if followup.save
+        format.html { redirect_to edit_line_entry_path(params[:line_entries], @line_entry) }
+        format.json { render json: {id: followup.id, description: followup.description, percentage: followup.percentage, user: current_user }, status: :created}
+      else
+        format.html { render :edit }
+        format.json { render json: followup.errors, status: :unprocessable_entity }
+        flash[:notice] = "There's some fields without data."
+      end
     end
 
     mentions = find_all_mentions(followup)
