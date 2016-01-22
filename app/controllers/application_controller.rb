@@ -14,11 +14,14 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user_is_authenticated!
-    if params[:token]
-      users = User.where(authentication_token: params[:token])
-      users.one? ?  sign_in(:user, users.first) : authenticate_user!
-    else
-      authenticate_user!
-    end
+    params[:token].present? ? sign_in_user : authenticate_user!
+  end
+
+  def sign_in_user
+    users.one? ?  sign_in(:user, users.first) : authenticate_user!
+  end
+
+  def users
+    User.where(authentication_token: params[:token])
   end
 end
