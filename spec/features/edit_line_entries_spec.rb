@@ -4,6 +4,31 @@ feature "Editing line entries" do
   let(:user) { FactoryGirl.create(:user) }
   let(:yoko) { FactoryGirl.create(:user, email: 'yoko@gmail.com') }
 
+  context "when a user is not logged in" do
+    let(:my_line) { yoko.lines.create!(name: 'Support Tickets', properties: [Property.new(name: 'Title')]) }
+    let(:my_line_entry) { user.line_entries.create!(line: my_line, data: {title: "new line entry"}) }
+    context "and the request has valid token" do
+      scenario "let visit path" do
+        visit "/#{my_line.slug_name}/#{my_line_entry.id}/edit?token=#{yoko.authentication_token}"
+        expect(current_path).to eq "/support_tickets/#{my_line_entry.id}/edit"
+        expect(page).to have_content(my_line_entry.data[:title])
+      end
+    end
+    context "and the request has not valid token" do
+      scenario "mustn't visit path" do
+        visit "/#{my_line.slug_name}/#{my_line_entry.id}/edit?token=jsdhfkdhfsklhd"
+        expect(current_path).to eq new_user_session_path
+        expect(page).to have_content("Log in")
+      end
+    end
+    context "and the request has not token" do
+      scenario "mustn't visit path" do
+        visit "/#{my_line.slug_name}/#{my_line_entry.id}/edit"
+        expect(page).to have_content("Log in")
+      end
+    end
+  end
+
   context "when a user is logged in" do
     context "and the line exists" do
       context "and if user is owner of the line" do

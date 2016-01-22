@@ -3,7 +3,6 @@ require "hashtag_finder"
 require "line_entry_properties_to_html_inputs_mapper"
 
 class LineEntriesController < ApplicationController
-  before_action :authenticate_user!, expect: [:create]
 
   def index
     @user = current_user
