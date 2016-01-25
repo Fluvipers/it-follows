@@ -1,0 +1,10 @@
+%nav.navbar
+  .navbar-right
+    .media
+      .media-left
+        %img.img-circle.media-object{:src => current_user.image_url}/
+      .media-body
+        %h4.media-heading= current_user.full_name
+        %b
+          @#{current_user.screen_name}
+        = current_user.email

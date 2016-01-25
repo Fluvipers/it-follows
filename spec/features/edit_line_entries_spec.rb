@@ -1,12 +1,53 @@
 require 'rails_helper'
 
 feature "Editing line entries" do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:yoko) { FactoryGirl.create(:user, email: 'yoko@gmail.com') }
+  let(:user) { FactoryGirl.create(:user, role: "Admin") }
+  let(:yoko) { FactoryGirl.create(:user, email: 'yoko@gmail.com', role: "it_followers", first_name: "Yoko", last_name: "No se sabe") }
+
+  context "when a user is logged in" do
+    context "and the role is Admin" do
+      scenario "must find navbar" do
+        my_no_admin_line = user.lines.create!(name: 'Line 2', properties: [Property.new(name: 'Title')])
+        my_admin_line =  user.lines.create!(name: 'Line 1', properties: [Property.new(name: 'Title')])
+
+        visit "/#{my_admin_line.slug_name}?token=#{user.authentication_token}"
+
+        expect(page).not_to have_content(yoko.full_name)
+        expect(page).not_to have_content("@#{yoko.screen_name}")
+        expect(page).not_to have_content(yoko.email)
+        expect(page).to have_content(user.full_name)
+        expect(page).to have_content("@#{user.screen_name}")
+        expect(page).to have_content(user.email)
+
+        expect(page).to have_content(my_admin_line.name)
+        expect(page).to have_content(my_no_admin_line.name)
+      end
+    end
+
+    context "and the role is not Admin" do
+      scenario "mustn't find navbar" do
+        my_no_admin_line = user.lines.create!(name: 'Line 2', properties: [Property.new(name: 'Title')]) 
+        my_admin_line =  user.lines.create!(name: 'Line 1', properties: [Property.new(name: 'Title')])
+
+        visit "/#{my_no_admin_line.slug_name}?token=#{yoko.authentication_token}"
+
+        expect(page).to have_content(yoko.full_name)
+        expect(page).to have_content("@#{yoko.screen_name}")
+        expect(page).to have_content(yoko.email)
+        expect(page).not_to have_content(user.full_name)
+        expect(page).not_to have_content("@#{user.screen_name}")
+        expect(page).not_to have_content(user.email)
+
+        expect(page).not_to have_content(my_admin_line.name)
+        expect(page).not_to have_content(my_no_admin_line.name)
+      end
+    end
+  end
 
   context "when a user is not logged in" do
     let(:my_line) { yoko.lines.create!(name: 'Support Tickets', properties: [Property.new(name: 'Title')]) }
     let(:my_line_entry) { user.line_entries.create!(line: my_line, data: {title: "new line entry"}) }
+
     context "and the request has valid token" do
       scenario "let visit path" do
         visit "/#{my_line.slug_name}/#{my_line_entry.id}/edit?token=#{yoko.authentication_token}"
@@ -14,6 +55,7 @@ feature "Editing line entries" do
         expect(page).to have_content(my_line_entry.data[:title])
       end
     end
+
     context "and the request has not valid token" do
       scenario "mustn't visit path" do
         visit "/#{my_line.slug_name}/#{my_line_entry.id}/edit?token=jsdhfkdhfsklhd"
@@ -21,6 +63,7 @@ feature "Editing line entries" do
         expect(page).to have_content("Log in")
       end
     end
+
     context "and the request has not token" do
       scenario "mustn't visit path" do
         visit "/#{my_line.slug_name}/#{my_line_entry.id}/edit"
