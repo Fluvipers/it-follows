@@ -24,4 +24,5 @@ class ApplicationController < ActionController::Base
   def users
     User.where(authentication_token: params[:token])
   end
+
 end

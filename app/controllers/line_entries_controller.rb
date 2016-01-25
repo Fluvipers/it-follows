@@ -132,7 +132,7 @@ class LineEntriesController < ApplicationController
   end
 
   def line_entry_params
-    params.require(:line_entry).permit(data: line_properties, followups_attributes: [:description, :percentage, :tasks, "0": [:attachments]])
+    params.require(:line_entry).permit(data: line_properties, followups_attributes: [:user_id, :description, :percentage, :tasks, "0": [:attachments]])
   end
 
   def find_line
