@@ -5,6 +5,7 @@ require "line_entry_properties_to_html_inputs_mapper"
 class LineEntriesController < ApplicationController
 
   def index
+    @lines = Line.all
     @user = current_user
     @line_entries = find_line.line_entries
     @line_entry_path = params[:line_entries]

@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+  def is_admin?
+    self.role == "Admin"
+  end
+
   private
 
   def set_screen_name

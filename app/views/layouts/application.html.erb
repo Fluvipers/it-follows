@@ -9,27 +9,9 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <% if user_signed_in? %>
-    <nav class="navbar">
-      <div class="navbar-right">
-        <div class="media">
-          <div class="media-left">
-            <img class="img-circle media-object" src="<%= current_user.image_url %>" />
-          </div>
-          <div class="media-body">
-            <h4 class="media-heading"><%= current_user.full_name %></h4>
-            <b>@<%= current_user.screen_name %></b>
-            <%= current_user.email %>
-          </div>
-        </div>
-      </div>
-    </nav>
-  <% end %>
-
   <div class="container">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-
     <%= yield %>
   </div>
 </body>
