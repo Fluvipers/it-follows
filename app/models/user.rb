@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
   mount_uploader :image, ImageUploader
   before_save :set_screen_name
+  validates :role, inclusion: {in: %w(Admin Itfollowers)}
 
   def full_name
     "#{first_name} #{last_name}"
