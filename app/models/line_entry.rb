@@ -14,7 +14,7 @@ class LineEntry < ActiveRecord::Base
   end
 
   def current_percentage
-    followups.last.try(:percentage).to_i
+    followups.reject { |f| f.percentage.nil? }.last.try(:percentage).to_i
   end
 
   def needs_followup?
