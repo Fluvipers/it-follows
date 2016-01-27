@@ -1,6 +1,13 @@
 - if @user.is_admin?
   = render partial: "line_entries/user"
   = render partial: "line_entries/nav"
+  .row
+    - @dashboards.each do |dashboard|
+      .col-xs-2
+        %a.btn.btn-info{href: dashboard.dashboard_url, id: dashboard.dashboard_name.gsub(' ', '_'), target:"_blank", role:"button"}
+          = dashboard.dashboard_name
+    %br
+    %br
 - else @user.is_admin?
   = render partial: "line_entries/user"
 = form_for @user, :url => line_entries_path, :html => { :method => 'GET' } do |f|

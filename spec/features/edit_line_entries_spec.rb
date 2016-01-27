@@ -6,6 +6,32 @@ feature "Editing line entries" do
 
   context "when a user is logged in" do
     context "and the role is Admin" do
+      context "and a line has no dashboards" do
+        scenario "must not find button link" do
+          my_no_admin_line = user.lines.create!(name: 'Line 2', properties: [Property.new(name: 'Title')])
+          my_admin_line =  user.lines.create!(name: 'Line 1', properties: [Property.new(name: 'Title')])
+
+          visit "/#{my_admin_line.slug_name}?token=#{user.authentication_token}"
+
+          #page.should have_selector(:link_or_button, 'Click me')
+          expect(page).not_to have_selector(:link_or_button, "un_dashboard")
+        end
+      end
+      context "and a line has dashboards" do
+        scenario "" do
+          my_no_admin_line = user.lines.create!(name: 'Line 2', properties: [Property.new(name: 'Title')])
+          my_admin_line =  user.lines.create!(name: 'Line 1', properties: [Property.new(name: 'Title')])
+          my_admin_line.dashboards.create!(dashboard_name: "un dashboard", dashboard_url: "http://localhost:3005/dashboard/1")
+          my_no_admin_line.dashboards.create!(dashboard_name: "un no admin dashboard", dashboard_url: "http://localhost:3005/dashboard/1")
+
+          visit "/#{my_admin_line.slug_name}?token=#{user.authentication_token}"
+
+          expect(page).to have_selector(:link_or_button, "un_dashboard")
+          expect(page).not_to have_selector(:link_or_button, "un_no_admin_dashboard")
+        end
+      end
+    end
+    context "and the role is Admin" do
       scenario "must find navbar" do
         my_no_admin_line = user.lines.create!(name: 'Line 2', properties: [Property.new(name: 'Title')])
         my_admin_line =  user.lines.create!(name: 'Line 1', properties: [Property.new(name: 'Title')])

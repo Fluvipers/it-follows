@@ -9,6 +9,7 @@ class LineEntriesController < ApplicationController
     @user = current_user
     @line_entries = find_line.line_entries
     @line_entry_path = params[:line_entries]
+    @dashboards = find_line.dashboards
   end
 
   def new
