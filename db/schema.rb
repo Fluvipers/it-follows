@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20160125184131) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "dashboards", force: :cascade do |t|
+    t.string  "dashboard_url"
+    t.string  "dashboard_name"
+    t.integer "line_id"
+  end
+
+  add_index "dashboards", ["line_id"], name: "index_dashboards_on_line_id", using: :btree
+
   create_table "followups", force: :cascade do |t|
     t.integer  "line_entry_id"
     t.integer  "user_id"

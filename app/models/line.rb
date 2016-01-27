@@ -3,6 +3,7 @@ class Line < ActiveRecord::Base
   validates_presence_of :name
   has_many :line_entries, dependent: :destroy
   has_many :properties, dependent: :destroy
+  has_many :dashboards, dependent: :destroy
 
   validates :name, uniqueness: { case_sensitive: false, message: "There is already a line with that name"}
   before_save :set_slug_name
