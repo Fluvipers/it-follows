@@ -60,6 +60,7 @@ class LineEntriesController < ApplicationController
 
     @line_entry.update(x)
     followup = @line_entry.followups.last
+    followup.user = current_user
 
     attachments = params[:line_entry][:followups_attributes]["0"][:attachments]
 
