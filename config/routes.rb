@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   devise_for :users, controllers: { sessions: "users/sessions"}
+  resources :users_sync, only: [:create, :update]
   resources :lines
 
   get '/:line_entries/', to: 'line_entries#index', as: 'line_entries', constraints: { line_entries: /\w+/}
