@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 feature "Editing line entries" do
-  let(:user) { FactoryGirl.create(:user, role: "Admin") }
-  let(:yoko) { FactoryGirl.create(:user, email: 'yoko@gmail.com', role: "it_followers", first_name: "Yoko", last_name: "No se sabe") }
+  let(:user) { FactoryGirl.create(:user, role: "Admin", authentication_token: "7kYCcvyqU9jagGAhi678k") }
+  let(:yoko) { FactoryGirl.create(:user, email: 'yoko@gmail.com', role: "it_followers", first_name: "Yoko", last_name: "No se sabe",
+                                    authentication_token: "7kYCcvyqU9jagGAhRZok") }
 
   context "when a user is logged in" do
     context "and the role is Admin" do
