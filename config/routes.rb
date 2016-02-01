@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { sessions: "users/sessions"}
   resources :lines
-  resources :users_sync, only: [:create, :update]
+  resources :users_sync, only: [:create, :update], constraints: { id: /\w+/} # id: authenticacion_token
 
   get '/:line_entries/', to: 'line_entries#index', as: 'line_entries', constraints: { line_entries: /\w+/}
   get '/:line_entries/new/' , to: 'line_entries#new' , as: 'new_line_entries', constraints: { line_entries: /\w+/}
