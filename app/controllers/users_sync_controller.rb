@@ -14,7 +14,7 @@ class UsersSyncController < ApplicationController
   end
 
   def update
-    @user = User.find_by_authentication_token(params[:user][:it_follows_token])
+    @user = User.find_by_authentication_token(params[:id])
     @user.update(user_params)
     render json: {id: @user.id, user_token: @user.authentication_token, encrypted_password: @user.encrypted_password}
   end
