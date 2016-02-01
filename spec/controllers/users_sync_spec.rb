@@ -52,12 +52,12 @@ describe UsersSyncController do
         user = FactoryGirl.create(:user)
         put :update, id: user.id, :user => {:nothign => "No nuevo nombre", it_follows_token: "7kYCcvyqU9jagGAhRZok"}
 
-        expect(user.first_name).to eq "wendy"
+        expect(user.first_name).to eq user.first_name
 
         user.reload
 
         expect(JSON.parse(response.body)).to eq ({"id"=>User.last.id, "user_token"=>User.last.authentication_token, "encrypted_password"=>User.last.encrypted_password})
-        expect(user.first_name).to eq "wendy"
+        expect(user.first_name).to eq user.first_name
       end
     end
   end
