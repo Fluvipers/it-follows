@@ -6,5 +6,6 @@ FactoryGirl.define do
     password '12345678'
     password_confirmation '12345678'
     confirmed_at Time.now
+    authentication_token "7kYCcvyqU9jagGAhRZok"
   end
 end
