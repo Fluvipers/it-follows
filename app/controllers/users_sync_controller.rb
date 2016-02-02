@@ -19,9 +19,10 @@ class UsersSyncController < ApplicationController
   end
 
   def update
-    @user = params["id"].present? ? User.find_by_authentication_token(params[:id]) : User.find_by_authentication_token(params[:user]["email"])
+    @user = params["id"].present? ? User.find_by_authentication_token(params[:id]) : User.find_by_email(params[:user]["email"])
     @user.update(user_params)
     render json: {id: @user.id, user_token: @user.authentication_token, encrypted_password: @user.encrypted_password}
+
   end
 
   private
