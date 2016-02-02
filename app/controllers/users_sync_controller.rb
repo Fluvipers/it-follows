@@ -5,6 +5,7 @@ class UsersSyncController < ApplicationController
     @user = User.new(user_params)
     @user.password = '12345678'
     @user.password_confirmation = '12345678'
+    @user.confirmed_at = Time.now
     if @user.save
       set_encrypted_password(@user)
       render json: {id: @user.id, user_token: @user.authentication_token, encrypted_password: @user.encrypted_password}
