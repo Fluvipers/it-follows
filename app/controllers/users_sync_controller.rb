@@ -2,22 +2,27 @@ class UsersSyncController < ApplicationController
   skip_before_filter :check_user_is_authenticated!
 
   def create
-    @user = User.new(user_params)
-    @user.password = '12345678'
-    @user.password_confirmation = '12345678'
-    @user.confirmed_at = Time.now
-    if @user.save
-      set_encrypted_password(@user)
-      render json: {id: @user.id, user_token: @user.authentication_token, encrypted_password: @user.encrypted_password}
+    unless User.where(email: user_params[:email]).present?
+      @user = User.new(user_params)
+      @user.password = '12345678'
+      @user.password_confirmation = '12345678'
+      @user.confirmed_at = Time.now
+      if @user.save
+        set_encrypted_password(@user)
+        render json: {id: @user.id, user_token: @user.authentication_token, encrypted_password: @user.encrypted_password}
+      else
+        render json: @user.errors.to_json, status: :unprocessable_entity
+      end
     else
-      render json: @user.errors.to_json, status: :unprocessable_entity
+      update
     end
   end
 
   def update
-    @user = User.find_by_authentication_token(params[:id])
+    @user = params["id"].present? ? User.find_by_authentication_token(params[:id]) : User.find_by_email(params[:user]["email"])
     @user.update(user_params)
     render json: {id: @user.id, user_token: @user.authentication_token, encrypted_password: @user.encrypted_password}
+
   end
 
   private
