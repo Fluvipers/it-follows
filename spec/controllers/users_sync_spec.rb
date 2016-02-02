@@ -33,9 +33,9 @@ describe UsersSyncController do
     context "with valid attributes" do
       it "saves the changes in the database" do
         user = FactoryGirl.create(:user)
-        put :update, id: user.id, :user => {:first_name => "No nuevo nombre", encrypted_password: "$2a$10$W72NutgGkcEYMo3LweiDYOB4fHC/y6Bc7XLOVvk5hzW5BYBzwWmC2",
-                                            last_name: "last", email: "email@remail.com", role: "Admin", confirmed_at: Time.now, country: "Colombia",
-                                            it_follows_token: "7kYCcvyqU9jagGAhRZok" }
+        put :update, id: user.authentication_token,
+          user: {first_name: "No nuevo nombre", encrypted_password: "$2a$10$W72NutgGkcEYMo3LweiDYOB4fHC/y6Bc7XLOVvk5hzW5BYBzwWmC2",
+          last_name: "last", email: "email@remail.com", role: "Admin", confirmed_at: Time.now, country: "Colombia" }
 
         expect(JSON.parse(response.body)).to eq ({"id"=>User.last.id, "user_token"=>User.last.authentication_token, "encrypted_password"=>User.last.encrypted_password})
         expect(user.first_name).to eq user.first_name
@@ -50,7 +50,7 @@ describe UsersSyncController do
     context "with invalid attributes" do
       it "does not save the changes in the database" do
         user = FactoryGirl.create(:user)
-        put :update, id: user.id, :user => {:nothign => "No nuevo nombre", it_follows_token: "7kYCcvyqU9jagGAhRZok"}
+        put :update, id: user.authentication_token, user: {nothign: "No nuevo nombre"}
 
         expect(user.first_name).to eq user.first_name
 
