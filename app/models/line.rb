@@ -12,7 +12,9 @@ class Line < ActiveRecord::Base
 
   private
   def find_or_create_property_name
-    self.properties.find_or_create_by(name: 'name')
+    property = self.properties.find_or_create_by(name: 'name')
+    property.required = true
+    property.save!
   end
 
   def set_slug_name
