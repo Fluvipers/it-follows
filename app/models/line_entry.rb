@@ -8,6 +8,9 @@ class LineEntry < ActiveRecord::Base
   accepts_nested_attributes_for :followups
   validates_presence_of :data
   validate :validation_parameters
+  include PgSearch
+
+  pg_search_scope :search_by_name, :against => :data
 
   def ransackable_attributes(auth_object = nil)
     super & %w(name price)

@@ -19,6 +19,7 @@ gem 'mandrill_mailer'
 gem 'jbuilder', '~> 2.0'
 gem 'thor'
 gem 'ransack'
+gem 'pg_search'
 
 group :development, :test do
   gem 'rspec-rails'

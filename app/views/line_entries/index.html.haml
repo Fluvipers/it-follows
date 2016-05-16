@@ -10,6 +10,12 @@
   = f.text_field :last_name
   = f.label :country
   = f.text_field :country
+  = f.label :screen_name
+  = f.text_field :screen_name
+  = f.submit
+= form_for :search, :url => line_entries_path, :html => { :method => 'GET' } do |f|
+  =f.label :search
+  =f.text_field :search
   = f.submit
 .col-xs-12.text-right
   = link_to 'New', new_line_entries_path(@line_entry_path), class: "button-new btn btn-info"

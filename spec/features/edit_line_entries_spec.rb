@@ -47,7 +47,7 @@ feature "Editing line entries" do
 
   context "when a user is not logged in" do
     let(:my_line) { yoko.lines.create!(name: 'Support Tickets', properties: [Property.new(name: 'Title')]) }
-    let(:my_line_entry) { user.line_entries.create!(line: my_line, data: {title: "new line entry"}) }
+    let(:my_line_entry) { user.line_entries.create!(line: my_line, data: {title: "new line entry", name: "Entry name"}) }
 
     context "and the request has valid token" do
       scenario "let visit path" do
@@ -80,7 +80,7 @@ feature "Editing line entries" do
           line = user.lines.create!(name: 'Support Tickets',
             properties: [Property.new(name: 'Title')])
           title = 'new test line'
-          line_entry = user.line_entries.create!(line: line, data: {title: title})
+          line_entry = user.line_entries.create!(line: line, data: {title: title, name: "Entry name"})
   
           visit new_user_session_path
   
@@ -109,7 +109,7 @@ feature "Editing line entries" do
         scenario "user can edit the line" do
           line = user.lines.create!(name: 'Support Tickets',
             properties: [Property.new(name: 'Title')])
-          line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
+          line_entry = user.line_entries.create!(line: line, data: {title: 'algo', name: "Entry name"})
           followup = line_entry.followups.create!(description: "do something", percentage: 0, user: user)
           task = line_entry.followups.last.tasks.create!(user_id: user.id, description: "do something with @#{yoko.screen_name}")
 
@@ -139,7 +139,7 @@ feature "Editing line entries" do
         scenario "user can edit the line" do
           line = user.lines.create!(name: 'Support Tickets',
             properties: [Property.new(name: 'Title')])
-          line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
+          line_entry = user.line_entries.create!(line: line, data: {title: 'algo', name: "Entry name"})
           followup = line_entry.followups.create!(description: "do something with @#{yoko.screen_name}", percentage: 0, user: user)
 
           visit new_user_session_path
@@ -168,7 +168,7 @@ feature "Editing line entries" do
       scenario "user can't edit the line" do
         line = user.lines.create!(name: 'Support Tickets',
           properties: [Property.new(name: 'Title')])
-        line_entry = user.line_entries.create!(line: line, data: {title: 'algo'})
+        line_entry = user.line_entries.create!(line: line, data: {title: 'algo', name: "Entry name"})
 
         visit new_user_session_path
 

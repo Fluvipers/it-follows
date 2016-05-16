@@ -67,7 +67,7 @@ RSpec.describe LineEntry, type: :model do
       context "and data has values for all required properties" do
         it "should create line entry" do
           expect(LineEntry.count).to eq 0
-          entry = cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon"})
+          entry = cashout.line_entries.create(user: user, data: {campaign: "Nickelodeon", name: "default name"})
           expect(entry.save).to eq true
           expect(LineEntry.count).to eq 1
         end
@@ -186,7 +186,7 @@ RSpec.describe LineEntry, type: :model do
 
     let(:cashout) { user.lines.create!(name: 'Cashouts') }
 
-    let(:entry) { cashout.line_entries.create!(user: user, data: {campaign: "Nickelodeon"}) }
+    let(:entry) { cashout.line_entries.create!(user: user, data: {campaign: "Nickelodeon", name: "default name"}) }
 
     context "and there is followup" do
       context "and there is a task" do
