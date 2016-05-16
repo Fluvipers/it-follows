@@ -7,7 +7,11 @@ class LineEntriesController < ApplicationController
   def index
     @lines = Line.all
     @user = current_user
-    @line_entries = find_line.line_entries
+    if params[:search]
+      @line_entries = LineEntry.search_by_name(params[:search][:search])
+    else
+      @line_entries = find_line.line_entries
+    end
     @line_entry_path = params[:line_entries]
   end
 
