@@ -9,7 +9,7 @@ describe Line do
 
   it "sets slug name on creating" do
     line = user.lines.new(name: 'Creating a new line')
-    line.save
+    line.save!
     expect(line.slug_name).to eq 'creating_a_new_line'
   end
 

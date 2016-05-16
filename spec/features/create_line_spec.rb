@@ -21,9 +21,10 @@ feature "Define a new Line", type: :feature do
 
     expect(current_path).to eq lines_path
     expect(page).to have_content("Proposal")
-    expect(Property.count).to eq 1
+    expect(Property.count).to eq 2
     expect(Property.first.name).to eq "New Property"
     expect(Property.first.required).to eq true
+    expect(Property.last.required).to eq true
 
     visit '/proposal'
 
@@ -31,6 +32,7 @@ feature "Define a new Line", type: :feature do
 
     click_link 'New'
 
+    expect(page).to have_content("Name")
     expect(page).to have_content("New Property")
   end
 end

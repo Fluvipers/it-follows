@@ -48,10 +48,13 @@ feature "Create a new line entry and enter followups for that entry" do
       scenario "I create a new Proposal and add followups for tha proposal" do
         file_path = File.expand_path('../../../spec/fixtures', __FILE__)
 
+        expect(Property.count).to eq 0
+
         line = user.lines.create!(name: 'Support Tickets')
         property = line.properties.create!(name: 'Title', required: true)
         property2 = line.properties.create!(name: 'Advertiser', required: true)
         property3 = line.properties.create!(name: 'Client', required: true)
+        expect(Property.count).to eq 4
 
         visit new_user_session_path
 
@@ -72,6 +75,7 @@ feature "Create a new line entry and enter followups for that entry" do
         within("#line-entry-form") do
           expect(page).to_not have_selector("#followups")
 
+          fill_in 'Name', with: 'New proposal name'
           fill_in 'Title', with: 'A new novel proposal'
           fill_in 'Advertiser', with: 'Havas'
           fill_in 'Client', with: 'Cocacola'

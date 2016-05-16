@@ -29,7 +29,7 @@ RSpec.describe Property, type: :model do
 
           expect(property.save).to eq true
           expect(property.errors).to_not include(:data_type)
-          expect(Property.count).to eq 1
+          expect(Property.count).to eq 2
         end
       end
       context "#data_type is date" do
@@ -38,7 +38,7 @@ RSpec.describe Property, type: :model do
 
           expect(property.save).to eq true
           expect(property.errors).to_not include(:data_type)
-          expect(Property.count).to eq 1
+          expect(Property.count).to eq 2
         end
       end
       context "#data_type is decimal" do
@@ -47,7 +47,7 @@ RSpec.describe Property, type: :model do
 
           expect(property.save).to eq true
           expect(property.errors).to_not include(:data_type)
-          expect(Property.count).to eq 1
+          expect(Property.count).to eq 2
         end
       end
       context "#data_type is integer" do
@@ -56,7 +56,7 @@ RSpec.describe Property, type: :model do
 
           expect(property.save).to eq true
           expect(property.errors).to_not include(:data_type)
-          expect(Property.count).to eq 1
+          expect(Property.count).to eq 2
         end
       end
       context "#data_type is array" do
@@ -65,7 +65,7 @@ RSpec.describe Property, type: :model do
 
           expect(property.save).to eq false
           expect(property.errors).to include(:data_type)
-          expect(Property.count).to eq 0
+          expect(Property.count).to eq 1
         end
       end
     end
@@ -73,9 +73,9 @@ RSpec.describe Property, type: :model do
       it "should create the property" do
         property = line.properties.build(required: true, name: 'Nueva Propiedad', data_type: "String")
 
-        expect(Property.count).to eq 0
-        expect(property.save).to eq true
         expect(Property.count).to eq 1
+        expect(property.save).to eq true
+        expect(Property.count).to eq 2
       end
     end
   end

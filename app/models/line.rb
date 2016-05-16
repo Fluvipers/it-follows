@@ -6,7 +6,7 @@ class Line < ActiveRecord::Base
 
   validates :name, uniqueness: { case_sensitive: false, message: "There is already a line with that name"}
   before_save :set_slug_name
-  before_save :create_property_name
+  after_save :create_property_name
 
   accepts_nested_attributes_for :properties
 
