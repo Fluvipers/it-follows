@@ -1,6 +1,78 @@
 require 'rails_helper'
 
 feature "Create a new line entry and enter followups for that entry" do
+  before do
+    user = FactoryGirl.create(:user)
+    @line1 = user.lines.create!(name: 'Support Tickets')
+    property11 = @line1.properties.create!(name: 'Title', required: true)
+    property12 = @line1.properties.create!(name: 'Advertiser', required: true)
+ 
+    @line2 = user.lines.create!(name: 'Influencers commits')
+    property21 = @line2.properties.create!(name: 'id', required: true)
+    property22 = @line2.properties.create!(name: 'screen_name', required: true)
+
+    @my_line_entry11 = user.line_entries.create!(line: @line1, data: { advertiser: "Lecheria", title: "Presupuesto", name: "Colanta" })
+    @my_line_entry12 = user.line_entries.create!(line: @line1, data: { advertiser: "Gaseosa", title: "Presupuesto", name: "Coke" })
+
+    @my_line_entry31 = user.line_entries.create!(line: @line2, data: { screen_name: "Maria", id: "13", name: "manvedu" })
+    @my_line_entry32 = user.line_entries.create!(line: @line2, data: { screen_name: "eliecer", id: "45", name: "ladilla" })
+    @my_line_entry33 = user.line_entries.create!(line: @line2, data: { screen_name: "rocio", id: "34", name: "padilla" })
+    @my_line_entry34 = user.line_entries.create!(line: @line2, data: { screen_name: "don", id: "89", name: "ardilla" })
+
+    visit new_user_session_path
+
+    within("#new_user") do
+      fill_in "Email", with: user.email
+      fill_in "Password", with: user.password
+      click_button "Log in"
+    end
+  end
+
+  context "When there are two lines" do
+    context "and I search for some data in data propertie in line_entry" do
+      scenario "should find line_entries with that data for my respectly line" do
+
+        visit "/#{@line1.slug_name}"
+        fill_in "search[search]", with: "Presupuesto"
+        click_button "Save Search"
+        expect(page).to have_content("Colanta")
+        expect(page).to have_content("Coke")
+
+        fill_in "search[search]", with: "Coke"
+        click_button "Save Search"
+        expect(page).to_not have_content("Colanta")
+        expect(page).to have_content("Coke")
+
+        fill_in "search[search]", with: "manvedu"
+        click_button "Save Search"
+        expect(page).to_not have_content("Colanta")
+        expect(page).to_not have_content("Coke")
+
+        visit "/#{@line2.slug_name}"
+        fill_in "search[search]", with: "Presupuesto"
+        click_button "Save Search"
+        expect(page).to_not have_content("Colanta")
+        expect(page).to_not have_content("Coke")
+
+        fill_in "search[search]", with: "Colanta"
+        click_button "Save Search"
+        expect(page).to_not have_content("Colanta")
+        expect(page).to_not have_content("Coke")
+
+        fill_in "search[search]", with: "padilla"
+        click_button "Save Search"
+        expect(page).to_not have_content("Colanta")
+        expect(page).to_not have_content("Coke")
+        expect(page).to_not have_content("ladilla")
+        expect(page).to_not have_content("ardilla")
+        expect(page).to_not have_content("manvedu")
+
+      end
+    end
+  end
+end
+
+feature "Create a new line entry and enter followups for that entry" do
   let (:user) { user = FactoryGirl.create(:user) }
   context "When there is a line called 'Support tickets' available on the nav menu" do
     context "As a logged user" do
